@@ -1,4 +1,4 @@
-package exceptions;
+package model.exceptions;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
