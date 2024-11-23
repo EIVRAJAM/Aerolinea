@@ -1,12 +1,13 @@
-package dto;
+package model.dto;
 
 import java.util.List;
 
 public record AeropuertoDTO(
-        Long id_aeropuerto,
+        int id,
         String nombre,
         String ciudad,
         String pais,
-        List<Long> id_vuelos
+        List<VueloDTO> vuelosOrigen,
+        List<VueloDTO> vuelosDestino
 ) {
 }

@@ -1,18 +1,16 @@
-package dto;
+package model.dto;
 
-import java.util.Date;
+import java.sql.Time;
+import java.time.LocalDate;
 import java.util.List;
 
-public record VueloDTO(
-        Long id_vuelo,
-        String origen,
-        String destino,
-        Date fecha_de_salida,
-        Date hora_de_salida,
-        Date duracion,
-        String capacidad,
-        List<Long> id_reservas,
-        Long id_aerolinea,
-        Long id_aeropuerto
-) {
+public record VueloDTO(int id,
+                       AerolineaDTO aerolinea,
+                       AeropuertoDTO aeropuertoOrigen,
+                       AeropuertoDTO aeropuertoDestino,
+                       LocalDate fechaSalida,
+                       Time tiempoSalida,
+                       Time duracion,
+                       int capacity,
+                       List<ReservaDTO> reservas) {
 }

@@ -1,12 +1,12 @@
-package dto;
+package model.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public record AerolineaDTO(Long id_aerolinea,
+public record AerolineaDTO(int id,
                            String nombre,
                            String codigoAerolinea,
                            String paisOrigen,
-                           ArrayList<Long> vuelosIds) {
+                           List<VueloDTO> vuelos) {
 }
 
 

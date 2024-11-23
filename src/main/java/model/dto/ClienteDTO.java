@@ -1,14 +1,14 @@
-package dto;
+package model.dto;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public record ClienteDTO(Long id_cliente,
+public record ClienteDTO(int id,
                          String nombre,
                          String apellidos,
                          String direccion,
                          int telefono,
                          String email,
-                         ArrayList<Long> reservasIds) {
+                         List<ReservaDTO> reservas) {
 }
 
 

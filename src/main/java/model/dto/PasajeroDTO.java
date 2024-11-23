@@ -1,11 +1,4 @@
-package dto;
+package model.dto;
 
-public record PasajeroDTO(
-        Long id_pasajero,
-        String nombre,
-        String apellido,
-        String telefono,
-        int cedula,
-        Long id_reserva
-) {
+public record PasajeroDTO(int id, String nombre, String apellido, String telefono ,String direccion, String email, ReservaDTO reserva) {
 }
