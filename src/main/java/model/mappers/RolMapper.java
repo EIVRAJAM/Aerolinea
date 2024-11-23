@@ -1,6 +1,6 @@
-package mappers;
+package model.mappers;
 
-import models.Rol;
+import model.models.Rol;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
