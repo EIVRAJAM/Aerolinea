@@ -1,11 +1,11 @@
-package controllers;
+package model.controllers;
 
-import models.Vuelo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import model.dto.VueloDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import services.VueloServices;
+import model.services.VueloServices;
 
 import java.net.URI;
 import java.util.List;
@@ -13,55 +13,44 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/vuelos")
+@AllArgsConstructor
 public class VueloController {
-
-    @Autowired
-    private VueloServices vueloServices;
-
-    @GetMapping
-    public ResponseEntity<List<Vuelo>> obtenerTodos() {
-        return ResponseEntity.ok(vueloServices.obtenerTodos());
+    private final VueloServices vueloServices;
+    @GetMapping()
+    public ResponseEntity<List<VueloDTO>> getFlights() {
+        return ResponseEntity.ok(vueloServices.findAll());
     }
-
     @GetMapping("/{id}")
-    public ResponseEntity<Vuelo> obtenerPorId(@PathVariable Long id) {
-        Optional<Vuelo> vuelo = vueloServices.obtenerPorId(id);
-        return vuelo.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<VueloDTO> getFlightById(@PathVariable int id) {
+        return vueloServices.findById(id)
+                .map(f->ResponseEntity.ok().body(f))
+                .orElse(ResponseEntity.notFound().build());
     }
-
-    @PostMapping
-    public ResponseEntity<Vuelo> guardar(@RequestBody Vuelo vuelo) {
-        return ResponseEntity.ok(vueloServices.guardar(vuelo));
+    @PostMapping()
+    public ResponseEntity<VueloDTO> createFlight(@RequestBody VueloDTO flight) {
+        return createNewFlight(flight);
     }
-
+    @PutMapping("/{id}")
+    public ResponseEntity<VueloDTO> updateFlight(@PathVariable int id, @RequestBody VueloDTO flight) {
+        Optional<VueloDTO> flightUpdate = vueloServices.update(id, flight);
+        return flightUpdate
+                .map(ResponseEntity::ok)
+                .orElseGet(()-> createNewFlight(flight));
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPorId(@PathVariable Long id) {
-        vueloServices.eliminarPorId(id);
+    public ResponseEntity<VueloDTO> deleteFlight(@PathVariable int id) {
+        vueloServices.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping()
-    public ResponseEntity<List<Vuelo>> buscarPorOrigen(@RequestParam(required = false, value = "origen") String origen) {
-        return ResponseEntity.ok(vueloServices.buscarPorOrigen(origen));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Vuelo> actualizarVuelo(@PathVariable Long id, @RequestBody Vuelo vuelo) {
-        try {
-            Vuelo vueloActualizado = vueloServices.actualizarVuelo(id, vuelo);
-            return ResponseEntity.ok(vueloActualizado);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    private static ResponseEntity<Vuelo> createNewVuelo(Vuelo vuelo) {
+    private ResponseEntity<VueloDTO> createNewFlight(VueloDTO flight) {
+        VueloDTO flightIdDto = vueloServices.save(flight);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(vuelo.getId_vuelo())
+                .buildAndExpand(flightIdDto.id())
                 .toUri();
-
-        return ResponseEntity.created(location).body(vuelo);
+        return ResponseEntity.created(location).body(flightIdDto);
     }
+
 }
+

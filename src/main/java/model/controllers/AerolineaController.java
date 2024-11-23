@@ -1,11 +1,11 @@
-package controllers;
+package model.controllers;
 
-import models.Aerolinea;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import model.dto.AerolineaDTO;
+import model.services.AerolineaServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import services.AerolineaServices;
 
 import java.net.URI;
 import java.util.List;
@@ -13,60 +13,42 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/aerolineas")
+@AllArgsConstructor
 public class AerolineaController {
-
-    @Autowired
-    private AerolineaServices aerolineaServices;
+    private final AerolineaServices aerolineaServices;
 
     @GetMapping
-    public ResponseEntity<List<Aerolinea>> obtenerTodas() {
-        return ResponseEntity.ok(aerolineaServices.obtenerTodas());
+    public ResponseEntity<List<AerolineaDTO>> getAirlines() {
+        return ResponseEntity.ok(aerolineaServices.findAll());
     }
-
     @GetMapping("/{id}")
-    public ResponseEntity<Aerolinea> obtenerPorId(@PathVariable Long id) {
-        Optional<Aerolinea> aerolinea = aerolineaServices.obtenerPorId(id);
-        return aerolinea.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<AerolineaDTO> getAirlineById(@PathVariable("id") int id) {
+        return aerolineaServices.findById(id)
+                .map( a-> ResponseEntity.ok().body(a))
+                .orElse(ResponseEntity.notFound().build());
     }
-
-    @PostMapping
-    public ResponseEntity<Aerolinea> guardar(@RequestBody Aerolinea aerolinea) {
-        return createNewAerolinea(aerolinea);
+    @PostMapping()
+    public ResponseEntity<AerolineaDTO> createAirline(@RequestBody AerolineaDTO airline) {
+        return createNewAirline(airline);
     }
-
+    @PutMapping("/{id}")
+    public ResponseEntity<AerolineaDTO> updateAirline(@PathVariable int id, @RequestBody AerolineaDTO airline){
+        Optional<AerolineaDTO> airlineUpdated = aerolineaServices.update(id, airline);
+        return airlineUpdated.map(ResponseEntity::ok).orElseGet(() -> createNewAirline(airline));
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPorId(@PathVariable Long id) {
-        aerolineaServices.eliminarPorId(id);
+    public ResponseEntity<AerolineaDTO> deleteAirline(@PathVariable int id) {
+        aerolineaServices.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping()
-    public  ResponseEntity<List<Aerolinea>> buscarPorNombre(@RequestParam(required = false, value = "nombre") String nombre) {
-        return ResponseEntity.ok(aerolineaServices.buscarPorNombre(nombre));
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<Aerolinea>> buscarPorPais(@RequestParam(required = false, value = "pais") String pais) {
-        return ResponseEntity.ok(aerolineaServices.buscarPorPais(pais));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Aerolinea> actualizarAerolinea(@PathVariable Long id, @RequestBody Aerolinea aerolinea) {
-        try {
-            Aerolinea aerolineaActualizada = aerolineaServices.actualizarAerolinea(id, aerolinea);
-            return ResponseEntity.ok(aerolineaActualizada);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    private static ResponseEntity<Aerolinea> createNewAerolinea(Aerolinea aerolinea) {
+    private ResponseEntity<AerolineaDTO> createNewAirline(AerolineaDTO airline) {
+        AerolineaDTO airlineIdDto = aerolineaServices.save(airline);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(aerolinea.getId_aerolinea())
+                .buildAndExpand(airlineIdDto.id())
                 .toUri();
-
-        return ResponseEntity.created(location).body(aerolinea);
+        return ResponseEntity.created(location).body(airlineIdDto);
     }
 }

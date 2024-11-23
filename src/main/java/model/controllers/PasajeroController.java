@@ -1,11 +1,13 @@
-package controllers;
+package model.controllers;
 
-import models.Pasajero;
+import lombok.AllArgsConstructor;
+import model.dto.PasajeroDTO;
+import model.models.Pasajero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import services.PasajeroServices;
+import model.services.PasajeroServices;
 
 import java.net.URI;
 import java.util.List;
@@ -13,54 +15,42 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/pasajeros")
+@AllArgsConstructor
 public class PasajeroController {
-
-    @Autowired
-    private PasajeroServices pasajeroServices;
-
-    @GetMapping
-    public ResponseEntity<List<Pasajero>> obtenerTodos() {
-        return ResponseEntity.ok(pasajeroServices.obtenerTodos());
+    private final PasajeroServices passengerService;
+    @GetMapping()
+    public ResponseEntity<List<PasajeroDTO>> getPassengers() {
+        return ResponseEntity.ok(passengerService.findAll());
     }
-
     @GetMapping("/{id}")
-    public ResponseEntity<Pasajero> obtenerPorId(@PathVariable Long id) {
-        Optional<Pasajero> pasajero = pasajeroServices.obtenerPorId(id);
-        return pasajero.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<PasajeroDTO> getPassengerById(@PathVariable("id") int id) {
+        return passengerService.getById(id)
+                .map(p->ResponseEntity.ok().body(p))
+                .orElse(ResponseEntity.notFound().build());
     }
-
-    @PostMapping
-    public ResponseEntity<Pasajero> guardar(@RequestBody Pasajero pasajero) {
-        return createNewPasajero(pasajero);
+    @PostMapping()
+    public ResponseEntity<PasajeroDTO> createPassenger(@RequestBody PasajeroDTO passenger) {
+        return createNewPassenger(passenger);
     }
-
+    @PutMapping("/{id}")
+    public ResponseEntity<PasajeroDTO> updatePassenger(@PathVariable("id") int id,@RequestBody PasajeroDTO passenger) {
+        Optional<PasajeroDTO> passengerUpdated = passengerService.update(id, passenger);
+        return passengerUpdated
+                .map(ResponseEntity::ok)
+                .orElseGet(()->createNewPassenger(passenger));
+    }
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPorId(@PathVariable Long id) {
-        pasajeroServices.eliminarPorId(id);
+    public ResponseEntity<PasajeroDTO> deletePassenger(@PathVariable("id") int id) {
+        passengerService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
-    @GetMapping()
-    public ResponseEntity<List<Pasajero>> buscarPorNombre(@RequestParam(required = false, value = "nombre") String nombre) {
-        return ResponseEntity.ok(pasajeroServices.buscarPorNombre(nombre));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Pasajero> actualizarPasajero(@PathVariable Long id, @RequestBody Pasajero pasajero) {
-        try {
-            Pasajero pasajeroActualizado = pasajeroServices.actualizarPasajero(id, pasajero);
-            return ResponseEntity.ok(pasajeroActualizado);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    private static ResponseEntity<Pasajero> createNewPasajero(Pasajero pasajero) {
+    private ResponseEntity<PasajeroDTO> createNewPassenger(PasajeroDTO passenger) {
+        PasajeroDTO passengerIdDto = passengerService.save(passenger);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(pasajero.getId_pasajero())
+                .buildAndExpand(passengerIdDto.id())
                 .toUri();
-        return ResponseEntity.created(location).body(pasajero);
+        return ResponseEntity.created(location).body(passengerIdDto);
     }
 }

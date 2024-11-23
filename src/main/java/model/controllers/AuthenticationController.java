@@ -1,13 +1,13 @@
-package controllers;
+package model.controllers;
 
-import dto.JwtResponse;
-import dto.LoginRequest;
-import dto.SignupRequest;
-import models.Usuario;
-import mappers.RolMapper;
-import repositories.UsuarioRepository;
-import security.jwt.JwtUtil;
-import security.service.UserDetailsImpl;
+import model.dto.JwtResponse;
+import model.dto.LoginRequest;
+import model.dto.SignupRequest;
+import model.models.Usuario;
+import model.mappers.RolMapper;
+import model.repositories.UsuarioRepository;
+import model.security.jwt.JwtUtil;
+import model.security.service.UserDetailsImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

@@ -1,11 +1,11 @@
-package controllers;
+package model.controllers;
 
-import models.Cliente;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import model.dto.ClienteDTO;
+import model.services.ClienteServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import services.ClienteServices;
 
 import java.net.URI;
 import java.util.List;
@@ -13,54 +13,49 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/clientes")
+@AllArgsConstructor
 public class ClienteController {
+    private final ClienteServices clienteServices;
 
-    @Autowired
-    private ClienteServices clienteServices;
 
     @GetMapping()
-    public ResponseEntity<List<Cliente>> obtenerTodos() {
-        return ResponseEntity.ok(clienteServices.obtenerTodos());
+    public ResponseEntity<List<ClienteDTO>> getClients() {
+        return ResponseEntity.ok(clienteServices.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cliente> obtenerPorId(@PathVariable Long id) {
-        Optional<Cliente> cliente = clienteServices.obtenerPorId(id);
-        return cliente.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<ClienteDTO> getClientById(@PathVariable int id) {
+        return clienteServices.findById(id)
+                .map( c -> ResponseEntity.ok().body(c))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping()
-    public ResponseEntity<Cliente> guardar(@RequestBody Cliente cliente) {
-        return createNewCliente(cliente);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPorId(@PathVariable Long id) {
-        clienteServices.eliminarPorId(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<Cliente>> buscarPorNombre(@RequestParam(required = false, value = "nombre") String nombre) {
-        return ResponseEntity.ok(clienteServices.buscarPorNombre(nombre));
+    public ResponseEntity<ClienteDTO> createClient(@RequestBody ClienteDTO client) {
+        return createNewClient(client);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cliente> actualizarCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
-        try {
-            Cliente clienteActualizado = clienteServices.actualizarCliente(id, cliente);
-            return ResponseEntity.ok(clienteActualizado);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    public ResponseEntity<ClienteDTO> updateClient(@PathVariable int id, @RequestBody ClienteDTO client) {
+        Optional<ClienteDTO> clientUpdated = clienteServices.update(id, client);
+        return clientUpdated
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> createNewClient(client));
     }
 
-    private static ResponseEntity<Cliente> createNewCliente(Cliente cliente) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteClient(@PathVariable int id) {
+        clienteServices.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    private ResponseEntity<ClienteDTO> createNewClient(ClienteDTO client) {
+        ClienteDTO clientIdDto = clienteServices.save(client);
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")
-                .buildAndExpand(cliente.getId_cliente())
+                .buildAndExpand(clientIdDto.id())
                 .toUri();
-        return ResponseEntity.created(location).body(cliente);
+        return ResponseEntity.created(location).body(clientIdDto);
     }
 }
