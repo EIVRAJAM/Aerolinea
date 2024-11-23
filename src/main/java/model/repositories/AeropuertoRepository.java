@@ -1,6 +1,6 @@
-package repositories;
+package model.repositories;
 
-import models.Aeropuerto;
+import model.models.Aeropuerto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
