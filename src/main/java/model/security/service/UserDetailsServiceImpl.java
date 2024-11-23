@@ -1,8 +1,8 @@
-package security.service;
+package model.security.service;
 
-import repositories.UsuarioRepository;
+import model.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
-import models.Usuario;
+import model.models.Usuario;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

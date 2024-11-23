@@ -1,4 +1,4 @@
-package security.jwt.exception;
+package model.security.jwt.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

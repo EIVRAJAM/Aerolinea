@@ -1,8 +1,8 @@
-package security;
+package model.security;
 
 import lombok.AllArgsConstructor;
-import security.jwt.AuthTokenFilter;
-import security.jwt.exception.AuthEntryPointJwt;
+import model.security.jwt.AuthTokenFilter;
+import model.security.jwt.exception.AuthEntryPointJwt;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-@SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
 @Configuration
 @EnableWebSecurity
 @AllArgsConstructor

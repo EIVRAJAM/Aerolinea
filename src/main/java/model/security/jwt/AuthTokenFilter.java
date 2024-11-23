@@ -1,4 +1,4 @@
-package security.jwt;
+package model.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
