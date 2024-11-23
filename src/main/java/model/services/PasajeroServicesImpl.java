@@ -1,52 +1,64 @@
-package services;
+package model.services;
 
-import repositories.PasajeroRepository;
-import models.Pasajero;
+import lombok.AllArgsConstructor;
+import model.dto.PasajeroDTO;
+import model.mappers.PasajeroMapper;
+import model.mappers.ReservaMapper;
+import model.repositories.PasajeroRepository;
+import model.models.Pasajero;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class PasajeroServicesImpl implements services.PasajeroServices {
-
-    @Autowired
-    private PasajeroRepository pasajeroRepositorio;
+@AllArgsConstructor(onConstructor = @__(@Lazy))
+public class PasajeroServicesImpl implements PasajeroServices {
+    private final PasajeroMapper pasajeroMapper;
+    private final ReservaMapper reservaMapper;
+    PasajeroRepository pasajeroRepository;
 
     @Override
-    public List<Pasajero> obtenerTodos() {
-        return pasajeroRepositorio.findAll();
+    public PasajeroDTO save(PasajeroDTO passenger) {
+        return pasajeroMapper.toIdDto(pasajeroRepository.save(pasajeroMapper.toEntity(passenger)));
     }
 
     @Override
-    public Optional<Pasajero> obtenerPorId(Long id) {
-        return pasajeroRepositorio.findById(id);
+    public Optional<PasajeroDTO> getById(int id) {
+        return pasajeroRepository.findById(id).map(pasajeroMapper::toIdDto);
     }
 
     @Override
-    public Pasajero guardar(Pasajero pasajero) {
-        return pasajeroRepositorio.save(pasajero);
+    public Optional<PasajeroDTO> update(int id, PasajeroDTO passenger) {
+        return pasajeroRepository.findById(id).map(oldPassenger ->{
+            oldPassenger.setNombre(passenger.nombre());
+            oldPassenger.setApellido(passenger.apellido());
+            oldPassenger.setDireccion(passenger.direccion());
+            oldPassenger.setTelefono(passenger.telefono());
+            oldPassenger.setEmail(passenger.email());
+            oldPassenger.setReserva(reservaMapper.toEntity(passenger.reserva()));
+            return pasajeroMapper.toIdDto(pasajeroRepository.save(oldPassenger));
+        });
     }
 
     @Override
-    public void eliminarPorId(Long id) {
-        pasajeroRepositorio.deleteById(id);
+    public List<PasajeroDTO> findAll() {
+        return pasajeroMapper.toListIdDto(pasajeroRepository.findAll());
     }
 
     @Override
-    public List<Pasajero> buscarPorNombre(String nombre) {
-        return pasajeroRepositorio.findByNombre(nombre);
+    public List<PasajeroDTO> findByName(String name) {
+        Pasajero p = new Pasajero();
+        p.setNombre(name);
+        Example<Pasajero> example = Example.of(p);
+        return pasajeroMapper.toListIdDto(pasajeroRepository.findAll(example));
     }
 
     @Override
-    public List<Pasajero> buscarPorCedula(int cedula){ return pasajeroRepositorio.findByCedula(cedula);}
-
-    @Override
-    public Pasajero actualizarPasajero(Long id, Pasajero pasajero) {
-        Pasajero pasajeroExistente = pasajeroRepositorio.findById(id).orElseThrow();
-        pasajeroExistente.setNombre(pasajero.getNombre());
-        pasajeroExistente.setApellido(pasajero.getApellido());
-        return pasajeroRepositorio.save(pasajeroExistente);
+    public void deleteById(int id) {
+        pasajeroRepository.deleteById(id);
     }
 }

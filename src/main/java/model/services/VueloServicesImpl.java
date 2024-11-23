@@ -1,54 +1,70 @@
-package services;
+package model.services;
 
-import repositories.VueloRepository;
-import models.Vuelo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import model.dto.VueloDTO;
+import model.mappers.AerolineaMapper;
+import model.mappers.AeropuertoMapper;
+import model.mappers.ReservaMapper;
+import model.mappers.VueloMapper;
+import model.models.Vuelo;
+import model.repositories.VueloRepository;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class VueloServicesImpl implements services.VueloServices {
-
-    @Autowired
-    private VueloRepository vueloRepositorio;
+@AllArgsConstructor(onConstructor = @__(@Lazy))
+public class VueloServicesImpl implements VueloServices {
+    private final VueloMapper vueloMapper;
+    private final AerolineaMapper aerolineaMapper;
+    private final ReservaMapper reservaMapper;
+    private final AeropuertoMapper aeropuertoMapper;
+    VueloRepository vueloRepository;
 
     @Override
-    public List<Vuelo> obtenerTodos() {
-        return vueloRepositorio.findAll();
+    public VueloDTO save(VueloDTO flight) {
+        return vueloMapper.toIdDto(vueloRepository.save(vueloMapper.toEntity(flight)));
     }
 
     @Override
-    public Optional<Vuelo> obtenerPorId(Long id) { return vueloRepositorio.findById(id); }
-
-    @Override
-    public Vuelo guardar(Vuelo vuelo) {
-        return vueloRepositorio.save(vuelo);
+    public Optional<VueloDTO> findById(int id) {
+        return vueloRepository.findById(id).map(vueloMapper::toIdDto);
     }
 
     @Override
-    public void eliminarPorId(Long id) {
-        vueloRepositorio.deleteById(id);
+    public Optional<VueloDTO> update(int id, VueloDTO flight) {
+        return vueloRepository.findById(id).map(oldFlight ->{
+            oldFlight.setTiempo_salida(flight.tiempoSalida());
+            oldFlight.setAerolinea(aerolineaMapper.toEntity(flight.aerolinea()));
+            oldFlight.setReservas(reservaMapper.toListEntity(flight.reservas()));
+            oldFlight.setDuracion(flight.duracion());
+            oldFlight.setCapacidad(flight.capacity());
+            oldFlight.setAeropuertoDestino(aeropuertoMapper.toEntity(flight.aeropuertoDestino()));
+            oldFlight.setAeropuertoOrigen(aeropuertoMapper.toEntity(flight.aeropuertoOrigen()));
+            oldFlight.setFecha_salida(flight.fechaSalida());
+            return vueloMapper.toIdDto(vueloRepository.save(oldFlight));
+        });
     }
 
     @Override
-    public List<Vuelo> buscarPorOrigen(String origen) {
-        return vueloRepositorio.findByOrigen(origen);
+    public List<VueloDTO> findAll() {
+        return vueloMapper.toListIdDto(vueloRepository.findAll());
     }
 
     @Override
-    public List<Vuelo> buscarPorDestino(String destino) { return vueloRepositorio.findByDestino(destino); }
+    public List<VueloDTO> findByDate(LocalDate date) {
+        Vuelo f = new Vuelo();
+        f.setFecha_salida(date);
+        Example<Vuelo> example = Example.of(f);
+        return vueloMapper.toListIdDto(vueloRepository.findAll(example));
+    }
 
     @Override
-    public List<Vuelo> buscarPorFechaDeSalida(Date fechaDeSalida) { return vueloRepositorio.findByFechaDeSalida(fechaDeSalida); }
-
-    @Override
-    public Vuelo actualizarVuelo(Long id, Vuelo vuelo) {
-        Vuelo vueloExistente = vueloRepositorio.findById(id).orElseThrow();
-        vueloExistente.setOrigen(vuelo.getOrigen());
-        vueloExistente.setDestino(vuelo.getDestino());
-        return vueloRepositorio.save(vueloExistente);
+    public void deleteById(int id) {
+        vueloRepository.deleteById(id);
     }
 }

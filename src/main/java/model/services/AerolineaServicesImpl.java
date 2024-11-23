@@ -1,55 +1,62 @@
-package services;
+package model.services;
 
-
-import repositories.AerolineaRepository;
-import models.Aerolinea;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
+import model.dto.AerolineaDTO;
+import model.mappers.AerolineaMapper;
+import model.mappers.VueloMapper;
+import model.models.Aerolinea;
+import model.repositories.AerolineaRepository;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class AerolineaServicesImpl implements services.AerolineaServices {
-
-    @Autowired
-    private AerolineaRepository aerolineaRepositorio;
+@AllArgsConstructor(onConstructor = @__(@Lazy))
+public class AerolineaServicesImpl implements AerolineaServices {
+    private AerolineaRepository aerolineaRepository;
+    private VueloMapper vueloMapper;
+    private AerolineaMapper aerolineaMapper;
 
     @Override
-    public List<Aerolinea> obtenerTodas() {
-        return aerolineaRepositorio.findAll();
+    public AerolineaDTO save(AerolineaDTO airline) {
+        return aerolineaMapper.toIdDto(aerolineaRepository.save(aerolineaMapper.toEntity(airline)));
     }
 
     @Override
-    public Optional<Aerolinea> obtenerPorId(Long id) {
-        return aerolineaRepositorio.findById(id);
+    public Optional<AerolineaDTO> findById(int id) {
+        return aerolineaRepository.findById(id).map(aerolineaMapper::toIdDto);
     }
 
     @Override
-    public Aerolinea guardar(Aerolinea aerolinea) {
-        return aerolineaRepositorio.save(aerolinea);
+    public Optional<AerolineaDTO> update(int id, AerolineaDTO airline) {
+        return aerolineaRepository.findById(airline.id()).map(oldAirline -> {
+            oldAirline.setCodigoAerolinea(airline.codigoAerolinea());
+            oldAirline.setNombre(airline.nombre());
+            oldAirline.setPaisOrigen(airline.paisOrigen());
+            oldAirline.setVuelos(vueloMapper.toListEntity(airline.vuelos()));
+            return aerolineaMapper.toIdDto(aerolineaRepository.save(oldAirline));
+        });
     }
 
     @Override
-    public void eliminarPorId(Long id) {
-        aerolineaRepositorio.deleteById(id);
+    public List<AerolineaDTO> findAll() {
+        return aerolineaMapper.toListIdDto(aerolineaRepository.findAll());
     }
 
     @Override
-    public List<Aerolinea> buscarPorNombre(String nombre) {
-        return aerolineaRepositorio.findByNombre(nombre);
+    public List<AerolineaDTO> findByName(String name) {
+        Aerolinea a = new Aerolinea();
+        a.setNombre(name);
+        Example<Aerolinea> example = Example.of(a);
+        return aerolineaMapper.toListIdDto(aerolineaRepository.findAll(example));
     }
 
     @Override
-    public List<Aerolinea> buscarPorPais(String pais) {
-        return aerolineaRepositorio.findByPaisOrigen(pais);
+    public void deleteById(int id) {
+        aerolineaRepository.deleteById(id);
     }
 
-    @Override
-    public Aerolinea actualizarAerolinea(Long id, Aerolinea aerolinea) {
-        Aerolinea aerolineaExistente = aerolineaRepositorio.findById(id).orElseThrow();
-        aerolineaExistente.setNombre(aerolinea.getNombre());
-        aerolineaExistente.setCodigoAerolinea(aerolinea.getCodigoAerolinea());
-        return aerolineaRepositorio.save(aerolineaExistente);
-    }
 }

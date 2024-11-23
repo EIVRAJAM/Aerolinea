@@ -1,25 +1,16 @@
-package services;
+package model.services;
 
-import models.Aeropuerto;
+import model.dto.AeropuertoDTO;
+import model.models.Aeropuerto;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AeropuertoServices {
-
-    List<Aeropuerto> obtenerTodos();
-
-    Optional<Aeropuerto> obtenerPorId(Long id);
-
-    Aeropuerto guardar(Aeropuerto aeropuerto);
-
-    void eliminarPorId(Long id);
-
-    List<Aeropuerto> buscarPorNombre(String nombre);
-
-    List<Aeropuerto> buscarPorCiudad(String ciudad);
-
-    List<Aeropuerto> buscarPorPais(String pais);
-
-    Aeropuerto actualizarAeropuerto(Long id, Aeropuerto aeropuerto);
+    AeropuertoDTO save(AeropuertoDTO airport);
+    Optional<AeropuertoDTO> findById(int id);
+    Optional<AeropuertoDTO> update(int id, AeropuertoDTO airport);
+    List<AeropuertoDTO> findAll();
+    List<AeropuertoDTO> findByName(String name);
+    void deleteById(int id);
 }

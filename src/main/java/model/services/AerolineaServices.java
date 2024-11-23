@@ -1,23 +1,15 @@
-package services;
+package model.services;
 
-import models.Aerolinea;
+import model.dto.AerolineaDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface AerolineaServices {
-
-    List<Aerolinea> obtenerTodas();
-
-    Optional<Aerolinea> obtenerPorId(Long id);
-
-    Aerolinea guardar(Aerolinea aerolinea);
-
-    void eliminarPorId(Long id);
-
-    List<Aerolinea> buscarPorNombre(String nombre);
-
-    List<Aerolinea> buscarPorPais(String pais);
-
-    Aerolinea actualizarAerolinea(Long id, Aerolinea aerolinea);
+    AerolineaDTO save(AerolineaDTO airline);
+    Optional<AerolineaDTO > findById(int id);
+    Optional<AerolineaDTO > update(int id, AerolineaDTO  airline);
+    List<AerolineaDTO > findAll();
+    List<AerolineaDTO > findByName(String name);
+    void deleteById(int id);
 }
