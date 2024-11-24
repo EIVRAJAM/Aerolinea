@@ -26,12 +26,12 @@ public class AeropuertoServicesImpl implements AeropuertoServices {
     }
 
     @Override
-    public Optional<AeropuertoDTO> findById(int id) {
-        return aeropuertoRepository.findById((long) id).map(aeropuertoMapper::toIdDto);
+    public Optional<AeropuertoDTO> findById(Long id) {
+        return aeropuertoRepository.findById(id).map(aeropuertoMapper::toIdDto);
     }
 
     @Override
-    public Optional<AeropuertoDTO> update(int id, AeropuertoDTO airport) {
+    public Optional<AeropuertoDTO> update(Long id, AeropuertoDTO airport) {
         return aeropuertoRepository.findById((long) id).map(oldAirport -> {
             oldAirport.setCiudad(airport.ciudad());
             oldAirport.setPais(airport.pais());
@@ -56,7 +56,7 @@ public class AeropuertoServicesImpl implements AeropuertoServices {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         aeropuertoRepository.deleteById((long)id);
     }
 

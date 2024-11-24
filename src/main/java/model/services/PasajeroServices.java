@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface PasajeroServices {
     PasajeroDTO save(PasajeroDTO passenger);
-    Optional<PasajeroDTO> getById(int id);
-    Optional<PasajeroDTO> update(int id, PasajeroDTO passenger);
+    Optional<PasajeroDTO> getById(Long id);
+    Optional<PasajeroDTO> update(Long id, PasajeroDTO passenger);
     List<PasajeroDTO> findAll();
     List<PasajeroDTO> findByName(String name);
-    void deleteById(int id);
+    void deleteById(Long id);
 }

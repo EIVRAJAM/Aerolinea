@@ -9,11 +9,13 @@ import java.util.Optional;
 
 public interface ClienteServices {
     ClienteDTO save(ClienteDTO client);
-    Optional<ClienteDTO> findById(int id);
-    Optional<ClienteDTO> update(int id, ClienteDTO client);
+    Optional<ClienteDTO> findById(Long id);
+    Optional<ClienteDTO> update(Long id, ClienteDTO client);
     List<ClienteDTO> findAll();
     List<ClienteDTO> findByName(String name);
-    void deleteById(int id);
+    void deleteById(Long id);
 
     List<ReservaDTO> getReservasByCliente(Long clienteId);
+
+    public ClienteDTO findByUsername(String username);
 }

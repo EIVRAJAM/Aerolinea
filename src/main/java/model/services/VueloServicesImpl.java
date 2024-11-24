@@ -7,6 +7,7 @@ import model.mappers.AeropuertoMapper;
 import model.mappers.ReservaMapper;
 import model.mappers.VueloMapper;
 import model.models.Vuelo;
+import model.repositories.ReservaRepository;
 import model.repositories.VueloRepository;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Example;
@@ -24,27 +25,29 @@ public class VueloServicesImpl implements VueloServices {
     private final ReservaMapper reservaMapper;
     private final AeropuertoMapper aeropuertoMapper;
     VueloRepository vueloRepository;
+    ReservaRepository reservaRepository;
 
     @Override
     public VueloDTO save(VueloDTO flight) {
-        return vueloMapper.toIdDto(vueloRepository.save(vueloMapper.toEntity(flight)));
+        return vueloMapper.toIdDto(vueloRepository.save(vueloMapper.toEntity(flight)));//sssss
     }
 
     @Override
-    public Optional<VueloDTO> findById(int id) {
+    public Optional<VueloDTO> findById(Long id) {
         return vueloRepository.findById(id).map(vueloMapper::toIdDto);
     }
 
     @Override
-    public Optional<VueloDTO> update(int id, VueloDTO flight) {
+    public Optional<VueloDTO> update(Long id, VueloDTO flight) {
         return vueloRepository.findById(id).map(oldFlight ->{
             oldFlight.setTiempo_salida(flight.tiempoSalida());
-            oldFlight.setAerolinea(aerolineaMapper.toEntity(flight.aerolinea()));
-            oldFlight.setReservas(reservaMapper.toListEntity(flight.reservas()));
+            oldFlight.setAerolinea(aerolineaMapper.toEntity(flight.aerolinea_id()));
+            oldFlight.setReservas(
+                    reservaRepository.findAllById(flight.reservas_id()));
             oldFlight.setDuracion(flight.duracion());
             oldFlight.setCapacidad(flight.capacity());
-            oldFlight.setAeropuertoDestino(aeropuertoMapper.toEntity(flight.aeropuertoDestino()));
-            oldFlight.setAeropuertoOrigen(aeropuertoMapper.toEntity(flight.aeropuertoOrigen()));
+            oldFlight.setAeropuertoDestino(aeropuertoMapper.toEntity(flight.aeropuertoDestino_id()));
+            oldFlight.setAeropuertoOrigen(aeropuertoMapper.toEntity(flight.aeropuertoOrigen_id()));
             oldFlight.setFecha_salida(flight.fechaSalida());
             return vueloMapper.toIdDto(vueloRepository.save(oldFlight));
         });
@@ -64,7 +67,7 @@ public class VueloServicesImpl implements VueloServices {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         vueloRepository.deleteById(id);
     }
 }

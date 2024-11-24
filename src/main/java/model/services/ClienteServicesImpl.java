@@ -31,12 +31,12 @@ public class ClienteServicesImpl implements ClienteServices {
     }
 
     @Override
-    public Optional<ClienteDTO> findById(int id) {
+    public Optional<ClienteDTO> findById(Long id) {
         return clienteRepository.findById(id).map(clienteMapper::toIdDto);
     }
 
     @Override
-    public Optional<ClienteDTO> update(int id, ClienteDTO client) {
+    public Optional<ClienteDTO> update(Long id, ClienteDTO client) {
         return clienteRepository.findById(id).map(oldClient -> {
             oldClient.setDireccion(client.direccion());
             oldClient.setNombre(client.nombre());
@@ -62,7 +62,7 @@ public class ClienteServicesImpl implements ClienteServices {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         clienteRepository.deleteById(id);
     }
 
@@ -78,5 +78,12 @@ public class ClienteServicesImpl implements ClienteServices {
 
         // Convertir las reservas a DTOs (si estás usando DTOs)
         return reservaMapper.toListIdDto(reservas);
+    }
+
+    //Se añadio
+    public ClienteDTO findByUsername(String username) {
+        return clienteRepository.findByUsername(username)
+                .map(cliente -> clienteMapper.toDto(cliente))
+                .orElse(null);
     }
 }

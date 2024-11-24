@@ -27,10 +27,25 @@ public class PasajeroServicesImpl implements PasajeroServices {
     }
 
     @Override
-    public Optional<PasajeroDTO> getById(int id) {
+    public Optional<PasajeroDTO> getById(Long id) {
         return pasajeroRepository.findById(id).map(pasajeroMapper::toIdDto);
     }
 
+    @Override
+    public Optional<PasajeroDTO> update(Long id, PasajeroDTO passenger) {  // Cambiar int a Long
+        return pasajeroRepository.findById(id).map(oldPassenger -> {
+            oldPassenger.setNombre(passenger.nombre());
+            oldPassenger.setApellido(passenger.apellido());
+            oldPassenger.setDireccion(passenger.direccion());
+            oldPassenger.setTelefono(passenger.telefono());
+            oldPassenger.setEmail(passenger.email());
+            oldPassenger.setReserva(reservaMapper.toEntity(passenger.reserva_id()));
+            return pasajeroMapper.toIdDto(pasajeroRepository.save(oldPassenger));
+        });
+    }
+
+
+    /*
     @Override
     public Optional<PasajeroDTO> update(int id, PasajeroDTO passenger) {
         return pasajeroRepository.findById(id).map(oldPassenger ->{
@@ -43,6 +58,7 @@ public class PasajeroServicesImpl implements PasajeroServices {
             return pasajeroMapper.toIdDto(pasajeroRepository.save(oldPassenger));
         });
     }
+    */
 
     @Override
     public List<PasajeroDTO> findAll() {
@@ -58,7 +74,7 @@ public class PasajeroServicesImpl implements PasajeroServices {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         pasajeroRepository.deleteById(id);
     }
 }

@@ -26,12 +26,12 @@ public class AerolineaServicesImpl implements AerolineaServices {
     }
 
     @Override
-    public Optional<AerolineaDTO> findById(int id) {
+    public Optional<AerolineaDTO> findById(Long id) {
         return aerolineaRepository.findById(id).map(aerolineaMapper::toIdDto);
     }
 
     @Override
-    public Optional<AerolineaDTO> update(int id, AerolineaDTO airline) {
+    public Optional<AerolineaDTO> update(Long id, AerolineaDTO airline) {
         return aerolineaRepository.findById(airline.id()).map(oldAirline -> {
             oldAirline.setCodigoAerolinea(airline.codigoAerolinea());
             oldAirline.setNombre(airline.nombre());
@@ -55,7 +55,7 @@ public class AerolineaServicesImpl implements AerolineaServices {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         aerolineaRepository.deleteById(id);
     }
 

@@ -10,11 +10,14 @@ import java.util.Optional;
 
 public interface ReservaServices {
     ReservaDTO save(ReservaDTO reserve);
-    Optional<ReservaDTO> findById(int id);
-    Optional<ReservaDTO> update(int id, ReservaDTO reserve);
+    Optional<ReservaDTO> findById(Long id);
+    Optional<ReservaDTO> update(Long id, ReservaDTO reserve);
     List<ReservaDTO> findAll();
     List<ReservaDTO> findByClient(ClienteDTO client);
     List<ReservaDTO> findByDate(LocalDate date);
-    void deleteById(int id);
+    void deleteById(Long id);
+
+    List<Reserva> findAllById(List<Long> ids);
+
 }
 

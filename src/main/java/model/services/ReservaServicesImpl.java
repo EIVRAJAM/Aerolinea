@@ -34,14 +34,15 @@ public class ReservaServicesImpl implements ReservaServices {
     }
 
     @Override
-    public Optional<ReservaDTO> findById(int id) {
+    public Optional<ReservaDTO> findById(Long id) {
         return reservaRepository.findById(id).map(reservaMapper::toDto);
     }
 
     @Override
-    public Optional<ReservaDTO> update(int id, ReservaDTO reserve) {
+    public Optional<ReservaDTO> update(Long id, ReservaDTO reserve) {
         return reservaRepository.findById(id).map(oldReserve -> {
-            oldReserve.setCliente(clienteMapper.toEntity(reserve.cliente()));
+            // Usa el nuevo método para convertir el cliente_id a Cliente
+            oldReserve.setCliente(clienteMapper.toEntity(reserve.cliente_id())); // Ahora pasa el cliente_id (Long)
             oldReserve.setFecha(reserve.fecha());
             oldReserve.setVuelos(vueloMapper.toListEntity(reserve.vuelos()));
             oldReserve.setPasajeros(pasajeroMapper.toListEntity(reserve.pasajeros()));
@@ -73,8 +74,12 @@ public class ReservaServicesImpl implements ReservaServices {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(Long id) {
         reservaRepository.deleteById(id);
+    }
+
+    public List<Reserva> findAllById(List<Long> ids) {
+        return null;
     }
 
 

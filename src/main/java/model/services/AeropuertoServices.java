@@ -8,9 +8,9 @@ import java.util.Optional;
 
 public interface AeropuertoServices {
     AeropuertoDTO save(AeropuertoDTO airport);
-    Optional<AeropuertoDTO> findById(int id);
-    Optional<AeropuertoDTO> update(int id, AeropuertoDTO airport);
+    Optional<AeropuertoDTO> findById(Long id);
+    Optional<AeropuertoDTO> update(Long id, AeropuertoDTO airport);
     List<AeropuertoDTO> findAll();
     List<AeropuertoDTO> findByName(String name);
-    void deleteById(int id);
+    void deleteById(Long id);
 }

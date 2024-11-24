@@ -12,9 +12,12 @@ import java.util.Optional;
 public interface VueloServices {
 
     VueloDTO save(VueloDTO flight);
-    Optional<VueloDTO> findById(int id);
-    Optional<VueloDTO> update(int id, VueloDTO flight);
+
+    Optional<VueloDTO> findById(Long id);
+
+    Optional<VueloDTO> update(Long id, VueloDTO flight);
+
     List<VueloDTO> findAll();
     List<VueloDTO> findByDate(LocalDate date);
-    void deleteById(int id);
+    void deleteById(Long id);
 }
