@@ -1,8 +1,12 @@
 package model.models;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,7 +14,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import jakarta.persistence.*;
@@ -19,11 +25,14 @@ import jakarta.persistence.*;
 @Setter
 @Entity
 @Table(name = "clientes")
+@NoArgsConstructor
+@AllArgsConstructor
+// Evita la serialización recursiva
 public class Cliente{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column( nullable = false, unique = true)
-    private int id;
+    private Long id;
 
     @Column(nullable = false)
     private String nombre;
@@ -35,12 +44,23 @@ public class Cliente{
     private String direccion;
 
     @Column(nullable = false)
-    private int telefono;//NO SIRVE EN LA BASE DE DATOS
-
-    @Column (nullable = false, unique = true)
-    private String email;
+    private String telefono;//NO SIRVE EN LA BASE DE DATOS
 
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reserva> reservas;
 
+    @Column(name="username", nullable = false, unique = true)
+    private String username;
+
+    @Column(name="password")
+    private String password;
+
+    @Column(name="email", nullable = false, unique = true)///OJOCONESO
+    private String email;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "usuario_rol",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "rol_id"))
+    private Set<Rol> roles;
 }
