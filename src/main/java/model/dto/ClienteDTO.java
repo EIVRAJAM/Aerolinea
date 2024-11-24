@@ -6,7 +6,7 @@ public record ClienteDTO(int id,
                          String nombre,
                          String apellidos,
                          String direccion,
-                         int telefono,
+                         String telefono,
                          String email,
                          List<ReservaDTO> reservas) {
 }
