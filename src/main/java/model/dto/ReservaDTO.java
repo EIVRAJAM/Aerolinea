@@ -3,10 +3,10 @@ package model.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-public record ReservaDTO(int id,
+public record ReservaDTO(Long id,
                          LocalDate fecha,
                          int numeroPasajeros,
-                         ClienteDTO cliente,
+                         Long cliente_id,
                          List<PasajeroDTO> pasajeros,
                          List<VueloDTO> vuelos) {
 }

@@ -2,7 +2,7 @@ package model.dto;
 
 import java.util.List;
 
-public record AerolineaDTO(int id,
+public record AerolineaDTO(Long id,
                            String nombre,
                            String codigoAerolinea,
                            String paisOrigen,

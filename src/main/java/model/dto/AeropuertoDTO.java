@@ -3,7 +3,7 @@ package model.dto;
 import java.util.List;
 
 public record AeropuertoDTO(
-        int id,
+        Long id,
         String nombre,
         String ciudad,
         String pais,

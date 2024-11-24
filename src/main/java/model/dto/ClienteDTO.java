@@ -2,13 +2,14 @@ package model.dto;
 
 import java.util.List;
 
-public record ClienteDTO(int id,
+public record ClienteDTO(Long id,
                          String nombre,
                          String apellidos,
                          String direccion,
                          String telefono,
                          String email,
-                         List<ReservaDTO> reservas) {
+                         List<ReservaDTO> reservas,
+                         String username) {//cambio---
 }
 
 
