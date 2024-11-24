@@ -25,39 +25,46 @@ public interface ClienteMapper {
     @Mapping(source = "clientesDTO.reservas", target = "reservas", qualifiedByName = "listEntityWithoutDtos")
     List<Cliente> toListEntity(List<ClienteDTO> clientesDTO);//...ok
 
-    @Named("withoutId")
+    @Named("clienteWithoutId")
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "cliente.reservas", target = "reservas", qualifiedByName = "listWithoutIdWithoutEntities")
     ClienteDTO toDto(Cliente cliente);//...ok
 
-    @Named("listWithoutId")
+    @Named("clientesListWithoutId")
     @Mapping(target = "id", ignore = true)
     @Mapping(source = "clientes.reservas", target = "reservas", qualifiedByName = "listWithoutIdWithoutEntities")
     List<ClienteDTO> toListDto(List<Cliente> clientes);//...ok
 
-    @Named("completeWithoutReserve")
+    @Named("clienteCompleteWithoutReserve")
     @Mapping(target = "reservas", ignore = true)
     ClienteDTO toIdDtoWithoutReserve(Cliente cliente);//...ok
 
-    @Named("listCompleteWithoutReserve")
+    @Named("clientesListCompleteWithoutReserve")
     @Mapping(target = "reservas", ignore = true)
     List<ClienteDTO> toListIdDtoWithoutReserve(List<Cliente> clientes);//...ok
 
-    @Named("entityWithoutReserve")
+    @Named("clienteEntityWithoutReserve")
     @Mapping(target = "reservas", ignore = true)
     Cliente toEntityWithoutReserve(Cliente cliente);//...ok
 
-    @Named("listEntityWithoutReserve")
+    @Named("clientesListEntityWithoutReserve")
     @Mapping(target = "reservas", ignore = true)
     List<Cliente> toListEntityWithoutReserve(List<Cliente> clientes);//...ok
 
-    @Named("withoutIdWithoutReserve")
+    @Named("clienteWithoutIdWithoutReserve")
     @Mapping(target = "reservas", ignore = true)
     @Mapping(target = "id", ignore = true)
     ClienteDTO toDtoWithoutReserve(Cliente cliente);//
 
-    @Named("listWithoutIdWithoutReserve")
+    @Named("clientesListWithoutIdWithoutReserve")
     @Mapping(target = "reservas", ignore = true)
     @Mapping(target = "id", ignore = true)
-    List<ClienteDTO> toListDtoWithoutReserve(List<Cliente> clients);
+    List<ClienteDTO> toListDtoWithoutReserve(List<Cliente> clientes);
+
+    @Named("clienteWithoutReservas")
+    @Mapping(target = "reservas", ignore = true)
+    ClienteDTO clienteToClienteDTOWithoutReservas(Cliente cliente);
+
+    @Mapping(target = "id", source = "id")
+    Cliente toEntity(Long id);
 }

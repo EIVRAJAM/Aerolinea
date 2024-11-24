@@ -60,4 +60,7 @@ public interface AerolineaMapper {
     @Mapping(target = "vuelos", ignore = true)
     @Mapping(target = "id", ignore = true)
     List<AerolineaDTO> toListDtoWithoutFlight(List<Aerolinea> aerolineas);//...ok
+
+    @Mapping(target = "id", source = "id")
+    Aerolinea toEntity(Long id);
 }

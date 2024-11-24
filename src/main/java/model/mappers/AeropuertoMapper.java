@@ -8,6 +8,78 @@ import org.mapstruct.Named;
 
 import java.util.List;
 
+
+@Mapper(componentModel = "spring", uses = VueloMapper.class)
+public interface AeropuertoMapper {
+
+    @Named("complete")
+    @Mapping(source = "vuelosOrigen", target = "vuelosOrigen", qualifiedByName = "listCompleteWithoutEntities")
+    @Mapping(source = "vuelosDestino", target = "vuelosDestino", qualifiedByName = "listCompleteWithoutEntities")
+    AeropuertoDTO toIdDto(Aeropuerto aeropuerto);
+
+    @Named("withoutId")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "vuelosOrigen", target = "vuelosOrigen", qualifiedByName = "listWithoutIdWithoutEntities")
+    @Mapping(source = "vuelosDestino", target = "vuelosDestino", qualifiedByName = "listWithoutIdWithoutEntities")
+    AeropuertoDTO toDto(Aeropuerto aeropuerto);
+
+    @Named("listComplete")
+    @Mapping(source = "vuelosOrigen", target = "vuelosOrigen", qualifiedByName = "listCompleteWithoutEntities")
+    @Mapping(source = "vuelosDestino", target = "vuelosDestino", qualifiedByName = "listCompleteWithoutEntities")
+    List<AeropuertoDTO> toListIdDto(List<Aeropuerto> aeropuertos);
+
+    @Named("listWithoutId")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "vuelosOrigen", target = "vuelosOrigen", qualifiedByName = "listWithoutIdWithoutEntities")
+    @Mapping(source = "vuelosDestino", target = "vuelosDestino", qualifiedByName = "listWithoutIdWithoutEntities")
+    List<AeropuertoDTO> toListDto(List<Aeropuerto> aeropuertos);
+
+    @Mapping(source = "aeropuertoDTO.vuelosOrigen", target = "vuelosOrigen", qualifiedByName = "listEntityWithoutDtos")
+    @Mapping(source = "aeropuertoDTO.vuelosDestino", target = "vuelosDestino", qualifiedByName = "listEntityWithoutDtos")
+    Aeropuerto toEntity(AeropuertoDTO aeropuertoDTO);
+
+    @Mapping(source = "aeropuertosDTO.vuelosOrigen", target = "vuelosOrigen", qualifiedByName = "listEntityWithoutDtos")
+    @Mapping(source = "aeropuertosDTO.vuelosDestino", target = "vuelosDestino", qualifiedByName = "listEntityWithoutDtos")
+    List<Aeropuerto> toListEntity(List<AeropuertoDTO> aeropuertosDTO);
+
+    @Named("completeWithoutFlight")
+    @Mapping(target = "vuelosOrigen", ignore = true)
+    @Mapping(target = "vuelosDestino", ignore = true)
+    AeropuertoDTO toIdDtoWithoutFlight(Aeropuerto aeropuerto);
+
+    @Named("listCompleteWithoutFlight")
+    @Mapping(target = "vuelosOrigen", ignore = true)
+    @Mapping(target = "vuelosDestino", ignore = true)
+    List<AeropuertoDTO> toListIdDtoWithoutFlight(List<Aeropuerto> aeropuertos);
+
+    @Named("withoutIdWithoutFlight")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "vuelosOrigen", ignore = true)
+    @Mapping(target = "vuelosDestino", ignore = true)
+    AeropuertoDTO toDtoWithoutFlight(Aeropuerto aeropuerto);
+
+    @Named("listWithoutIdWithoutFlight")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "vuelosOrigen", ignore = true)
+    @Mapping(target = "vuelosDestino", ignore = true)
+    List<AeropuertoDTO> toListDtoWithoutFlight(List<Aeropuerto> aeropuertos);
+
+    @Named("entityWithoutFlight")
+    @Mapping(target = "vuelosOrigen", ignore = true)
+    @Mapping(target = "vuelosDestino", ignore = true)
+    Aeropuerto toEntityWithoutFlight(AeropuertoDTO aeropuertoDTO);
+
+    @Named("listEntityWithoutFlight")
+    @Mapping(target = "vuelosOrigen", ignore = true)
+    @Mapping(target = "vuelosDestino", ignore = true)
+    List<Aeropuerto> toListEntityWithoutFlight(List<AeropuertoDTO> aeropuertosDTO);
+
+    @Mapping(target = "id", source = "id")
+    Aeropuerto toEntity(Long id);
+}
+
+
+/*
 @Mapper(componentModel = "spring", uses = VueloMapper.class)
 public interface AeropuertoMapper {
 
@@ -72,4 +144,8 @@ public interface AeropuertoMapper {
     @Mapping(target = "vuelosOrigen", ignore = true)
     @Mapping(target = "vuelosDestino", ignore = true)
     List<Aeropuerto> toListEntityWithoutFlight(List<AeropuertoDTO> aeropuertosDTO);//...ok
+
+    @Mapping(target = "id", source = "id")
+    Aeropuerto toEntity(Long id);
 }
+*/
