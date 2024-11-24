@@ -4,5 +4,5 @@ import model.models.Aerolinea;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface AerolineaRepository extends JpaRepository<Aerolinea, Integer>{
+public interface AerolineaRepository extends JpaRepository<Aerolinea, Long>{
 }
