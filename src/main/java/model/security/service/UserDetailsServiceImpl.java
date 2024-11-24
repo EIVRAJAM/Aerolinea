@@ -1,5 +1,7 @@
 package model.security.service;
 
+import model.models.Cliente;
+import model.repositories.ClienteRepository;
 import model.repositories.UsuarioRepository;
 import lombok.AllArgsConstructor;
 import model.models.Usuario;
@@ -12,10 +14,11 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UsuarioRepository userRepository;
+    private final ClienteRepository clienteRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario user = userRepository.findByUsername(username)
+        Cliente user = clienteRepository.findByUsername(username)
                 .orElseThrow(()-> new UsernameNotFoundException("Username not found"));
 
         return UserDetailsImpl.build(user);
