@@ -10,6 +10,7 @@ import java.util.Set;
 public interface RolMapper {
     @Mapping(target = "id", ignore = true)
     Rol toRole(String role);
+
     @Mapping(target = "id", ignore = true)
     Set<Rol> toRoles(Set<String> roles);
 }
