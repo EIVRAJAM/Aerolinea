@@ -22,6 +22,7 @@ public class PasajeroController {
     public ResponseEntity<List<PasajeroDTO>> getPassengers() {
         return ResponseEntity.ok(passengerService.findAll());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<PasajeroDTO> getPassengerById(@PathVariable("id") int id) {
         return passengerService.getById(id)

@@ -2,6 +2,7 @@ package model.controllers;
 
 import lombok.AllArgsConstructor;
 import model.dto.ClienteDTO;
+import model.dto.ReservaDTO;
 import model.services.ClienteServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -58,4 +59,11 @@ public class ClienteController {
                 .toUri();
         return ResponseEntity.created(location).body(clientIdDto);
     }
+
+    @GetMapping("/{id}/reservas")
+    public ResponseEntity<List<ReservaDTO>> getReservasByCliente(@PathVariable Long id) {
+        List<ReservaDTO> reservas = clienteServices.getReservasByCliente(id);
+        return ResponseEntity.ok(reservas);
+    }
+
 }

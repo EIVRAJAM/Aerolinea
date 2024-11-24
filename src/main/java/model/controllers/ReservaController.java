@@ -21,6 +21,7 @@ public class ReservaController {
     public ResponseEntity<List<ReservaDTO>> getReserves() {
         return ResponseEntity.ok(reservaServices.findAll());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<ReservaDTO> getReserveById(@PathVariable("id") int id) {
         return reservaServices.findById(id)

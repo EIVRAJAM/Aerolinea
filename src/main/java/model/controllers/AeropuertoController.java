@@ -22,6 +22,7 @@ public class AeropuertoController {
     public ResponseEntity<List<AeropuertoDTO>> getAirports() {
         return ResponseEntity.ok(aeropuertoServices.findAll());
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<AeropuertoDTO> getAirportById(@PathVariable("id") int id) {
         return aeropuertoServices.findById(id)
