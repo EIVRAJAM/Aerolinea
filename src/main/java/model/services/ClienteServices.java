@@ -1,6 +1,7 @@
 package model.services;
 
 import model.dto.ClienteDTO;
+import model.dto.ReservaDTO;
 import model.models.Cliente;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface ClienteServices {
     List<ClienteDTO> findAll();
     List<ClienteDTO> findByName(String name);
     void deleteById(int id);
+
+    List<ReservaDTO> getReservasByCliente(Long clienteId);
 }

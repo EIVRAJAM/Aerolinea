@@ -19,7 +19,7 @@ import java.util.Optional;
 public class PasajeroServicesImpl implements PasajeroServices {
     private final PasajeroMapper pasajeroMapper;
     private final ReservaMapper reservaMapper;
-    PasajeroRepository pasajeroRepository;
+    private final PasajeroRepository pasajeroRepository;
 
     @Override
     public PasajeroDTO save(PasajeroDTO passenger) {
