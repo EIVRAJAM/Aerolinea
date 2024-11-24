@@ -4,11 +4,18 @@ import lombok.AllArgsConstructor;
 import model.dto.ClienteDTO;
 import model.dto.ReservaDTO;
 import model.services.ClienteServices;
+//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.security.core.Authentication;
+
+
 
 import java.net.URI;
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +32,9 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDTO> getClientById(@PathVariable int id) {
+    public ResponseEntity<ClienteDTO> getClientById(@PathVariable Long id) {
+
+
         return clienteServices.findById(id)
                 .map( c -> ResponseEntity.ok().body(c))
                 .orElse(ResponseEntity.notFound().build());
@@ -37,7 +46,7 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDTO> updateClient(@PathVariable int id, @RequestBody ClienteDTO client) {
+    public ResponseEntity<ClienteDTO> updateClient(@PathVariable Long id, @RequestBody ClienteDTO client) {
         Optional<ClienteDTO> clientUpdated = clienteServices.update(id, client);
         return clientUpdated
                 .map(ResponseEntity::ok)
@@ -45,7 +54,7 @@ public class ClienteController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteClient(@PathVariable int id) {
+    public ResponseEntity<Void> deleteClient(@PathVariable Long id) {
         clienteServices.deleteById(id);
         return ResponseEntity.noContent().build();
     }

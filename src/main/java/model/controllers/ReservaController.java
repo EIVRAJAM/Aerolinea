@@ -23,7 +23,7 @@ public class ReservaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ReservaDTO> getReserveById(@PathVariable("id") int id) {
+    public ResponseEntity<ReservaDTO> getReserveById(@PathVariable("id") Long id) {
         return reservaServices.findById(id)
                 .map(r->ResponseEntity.ok().body(r))
                 .orElse(ResponseEntity.notFound().build());
@@ -33,7 +33,7 @@ public class ReservaController {
         return createNewReserve(reserve);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaDTO> updateReserve(@PathVariable int id, @RequestBody ReservaDTO reserve) {
+    public ResponseEntity<ReservaDTO> updateReserve(@PathVariable Long id, @RequestBody ReservaDTO reserve) {
         Optional<ReservaDTO> reserveUpdate = reservaServices.update(id,reserve);
         return reserveUpdate
                 .map(ResponseEntity::ok)

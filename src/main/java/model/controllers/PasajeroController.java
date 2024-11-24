@@ -24,7 +24,7 @@ public class PasajeroController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PasajeroDTO> getPassengerById(@PathVariable("id") int id) {
+    public ResponseEntity<PasajeroDTO> getPassengerById(@PathVariable("id") Long id) {
         return passengerService.getById(id)
                 .map(p->ResponseEntity.ok().body(p))
                 .orElse(ResponseEntity.notFound().build());
@@ -34,14 +34,14 @@ public class PasajeroController {
         return createNewPassenger(passenger);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<PasajeroDTO> updatePassenger(@PathVariable("id") int id,@RequestBody PasajeroDTO passenger) {
+    public ResponseEntity<PasajeroDTO> updatePassenger(@PathVariable("id") Long id,@RequestBody PasajeroDTO passenger) {
         Optional<PasajeroDTO> passengerUpdated = passengerService.update(id, passenger);
         return passengerUpdated
                 .map(ResponseEntity::ok)
                 .orElseGet(()->createNewPassenger(passenger));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<PasajeroDTO> deletePassenger(@PathVariable("id") int id) {
+    public ResponseEntity<PasajeroDTO> deletePassenger(@PathVariable("id") Long id) {
         passengerService.deleteById(id);
         return ResponseEntity.noContent().build();
     }

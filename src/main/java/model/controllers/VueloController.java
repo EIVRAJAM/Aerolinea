@@ -21,7 +21,7 @@ public class VueloController {
         return ResponseEntity.ok(vueloServices.findAll());
     }
     @GetMapping("/{id}")
-    public ResponseEntity<VueloDTO> getFlightById(@PathVariable int id) {
+    public ResponseEntity<VueloDTO> getFlightById(@PathVariable Long id) {
         return vueloServices.findById(id)
                 .map(f->ResponseEntity.ok().body(f))
                 .orElse(ResponseEntity.notFound().build());
@@ -31,14 +31,14 @@ public class VueloController {
         return createNewFlight(flight);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<VueloDTO> updateFlight(@PathVariable int id, @RequestBody VueloDTO flight) {
+    public ResponseEntity<VueloDTO> updateFlight(@PathVariable Long id, @RequestBody VueloDTO flight) {
         Optional<VueloDTO> flightUpdate = vueloServices.update(id, flight);
         return flightUpdate
                 .map(ResponseEntity::ok)
                 .orElseGet(()-> createNewFlight(flight));
     }
     @DeleteMapping("/{id}")
-    public ResponseEntity<VueloDTO> deleteFlight(@PathVariable int id) {
+    public ResponseEntity<VueloDTO> deleteFlight(@PathVariable Long id) {
         vueloServices.deleteById(id);
         return ResponseEntity.noContent().build();
     }
