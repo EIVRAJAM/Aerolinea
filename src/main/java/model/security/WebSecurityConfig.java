@@ -48,7 +48,7 @@ public class WebSecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Acceso público
-                        .requestMatchers(HttpMethod.GET, "/api/v1/clientes/**").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN") // Cambié hasAnyRole por hasAnyAuthority
+                        .requestMatchers(HttpMethod.GET, "/api/v1/clientes/").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN") // Cambié hasAnyRole por hasAnyAuthority
                         .requestMatchers(HttpMethod.POST, "/api/v1/clientes/**").hasAuthority("ROLE_ADMIN") // Cambié hasRole por hasAuthority
                         .requestMatchers(HttpMethod.PUT, "/api/v1/clientes/**").hasAuthority("ROLE_ADMIN") // Cambié hasRole por hasAuthority
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/clientes/**").hasAuthority("ROLE_ADMIN") // Cambié hasRole por hasAuthority
