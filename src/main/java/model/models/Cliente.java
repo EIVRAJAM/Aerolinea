@@ -1,12 +1,7 @@
 package model.models;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,7 +22,6 @@ import jakarta.persistence.*;
 @Table(name = "clientes")
 @NoArgsConstructor
 @AllArgsConstructor
-// Evita la serialización recursiva
 public class Cliente{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

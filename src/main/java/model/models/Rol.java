@@ -12,7 +12,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class Rol {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,5 +19,4 @@ public class Rol {
 
         @Enumerated(EnumType.STRING)
         private ERol role;
-
 }
