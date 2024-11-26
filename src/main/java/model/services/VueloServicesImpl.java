@@ -71,4 +71,9 @@ public class VueloServicesImpl implements VueloServices {
     public void deleteById(Long id) {
         vueloRepository.deleteById(id);
     }
+
+
+    public List<Vuelo> obtenerVuelosPorIds(List<Long> ids) {
+        return vueloRepository.findByIdIn(ids);
+    }
 }

@@ -22,7 +22,7 @@ public class AeropuertoServicesImpl implements AeropuertoServices {
 
     @Override
     public AeropuertoDTO save(AeropuertoDTO airport) {
-        return aeropuertoMapper.toDto(aeropuertoRepository.save(aeropuertoMapper.toEntity(airport)));
+        return aeropuertoMapper.toIdDto(aeropuertoRepository.save(aeropuertoMapper.toEntity(airport)));
     }
 
     @Override
@@ -45,7 +45,7 @@ public class AeropuertoServicesImpl implements AeropuertoServices {
 
     @Override
     public List<AeropuertoDTO> findAll() {
-        return aeropuertoMapper.toListDto((ArrayList<Aeropuerto>) aeropuertoRepository.findAll());
+        return aeropuertoMapper.toListIdDto((ArrayList<Aeropuerto>) aeropuertoRepository.findAll());
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AeropuertoServicesImpl implements AeropuertoServices {
         Aeropuerto a = new Aeropuerto();
         a.setNombre(name);
         Example<Aeropuerto> example = Example.of(a);
-        return aeropuertoMapper.toListDto((java.util.ArrayList<Aeropuerto>) aeropuertoRepository.findAll(example));
+        return aeropuertoMapper.toListIdDto((java.util.ArrayList<Aeropuerto>) aeropuertoRepository.findAll(example));
     }
 
     @Override

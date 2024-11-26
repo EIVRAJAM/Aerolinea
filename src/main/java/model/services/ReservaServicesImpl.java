@@ -23,13 +23,17 @@ import java.util.Optional;
 public class ReservaServicesImpl implements ReservaServices {
     private final ReservaMapper reservaMapper;
     private final ClienteMapper clienteMapper;
-    private final VueloMapper vueloMapper;
+    private final VueloServices vueloServices;
     private final PasajeroMapper pasajeroMapper;
     ReservaRepository reservaRepository;
 
     @Override
     public ReservaDTO save(ReservaDTO reserve) {
-        return reservaMapper.toIdDto(reservaRepository.save(reservaMapper.toEntity(reserve)));
+        Reserva reserva = reservaMapper.toEntity(reserve);
+
+        reserva.setVuelos(vueloServices.obtenerVuelosPorIds(reserve.vuelos_ids()));
+
+        return reservaMapper.toIdDto(reservaRepository.save(reserva));
     }
 
     @Override
@@ -40,7 +44,6 @@ public class ReservaServicesImpl implements ReservaServices {
     @Override
     public Optional<ReservaDTO> update(Long id, ReservaDTO reserve) {
         return reservaRepository.findById(id).map(oldReserve -> {
-            // Usa el nuevo método para convertir el cliente_id a Cliente
             if(reserve.cliente_id() != null) { oldReserve.setCliente(clienteMapper.toEntity(reserve.cliente_id())); }
             if(reserve.fecha() != null) { oldReserve.setFecha(reserve.fecha()); }
             if(reserve.vuelos_ids() != null) { oldReserve.setVuelos( findFlightsByReservationId(id)); }
