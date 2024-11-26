@@ -4,8 +4,8 @@ import java.util.List;
 
 public record AerolineaDTO(Long id,
                            String nombre,
-                           String codigoAerolinea,
-                           String paisOrigen,
+                           String codigo_aerolinea,
+                           String pais_origen,
                            List<VueloDTO> vuelos) {
 }
 

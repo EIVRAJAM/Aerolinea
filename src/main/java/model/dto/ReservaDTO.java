@@ -8,5 +8,5 @@ public record ReservaDTO(Long id,
                          int numeroPasajeros,
                          Long cliente_id,
                          List<PasajeroDTO> pasajeros,
-                         List<VueloDTO> vuelos) {
+                         List<Long> vuelos_ids) {
 }

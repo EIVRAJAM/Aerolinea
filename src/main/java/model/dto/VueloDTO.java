@@ -8,9 +8,10 @@ public record VueloDTO(Long id,
                        Long aerolinea_id,
                        Long aeropuertoOrigen_id,
                        Long aeropuertoDestino_id,
-                       LocalDate fechaSalida,
-                       Time tiempoSalida,
+                       LocalDate fecha_salida,
+                       Time hora_salida,
                        Time duracion,
-                       int capacity,
+                       int capacidad,
+                       Float precio,
                        List<Long> reservas_id) {
 }
