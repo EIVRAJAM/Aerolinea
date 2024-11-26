@@ -1,7 +1,6 @@
 package model.repositories;
 
 import model.models.Cliente;
-import model.models.Usuario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -11,7 +10,6 @@ import java.util.Optional;
 
 public interface ClienteRepository extends JpaRepository<Cliente, Long> {
     List<Cliente> findByNombre(String nombre);
-    //List<Cliente> findByEmail(String email);
 
     Optional<Cliente> findById(Long id);
 
