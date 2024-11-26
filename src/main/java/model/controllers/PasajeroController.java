@@ -2,8 +2,6 @@ package model.controllers;
 
 import lombok.AllArgsConstructor;
 import model.dto.PasajeroDTO;
-import model.models.Pasajero;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,6 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PasajeroController {
     private final PasajeroServices passengerService;
+
     @GetMapping()
     public ResponseEntity<List<PasajeroDTO>> getPassengers() {
         return ResponseEntity.ok(passengerService.findAll());
@@ -29,10 +28,12 @@ public class PasajeroController {
                 .map(p->ResponseEntity.ok().body(p))
                 .orElse(ResponseEntity.notFound().build());
     }
+
     @PostMapping()
     public ResponseEntity<PasajeroDTO> createPassenger(@RequestBody PasajeroDTO passenger) {
         return createNewPassenger(passenger);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<PasajeroDTO> updatePassenger(@PathVariable("id") Long id,@RequestBody PasajeroDTO passenger) {
         Optional<PasajeroDTO> passengerUpdated = passengerService.update(id, passenger);

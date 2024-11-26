@@ -1,19 +1,16 @@
 package model.controllers;
 
+import lombok.AllArgsConstructor;
 import model.dto.JwtResponse;
 import model.dto.LoginRequest;
 import model.dto.SignupRequest;
 import model.models.Cliente;
 import model.models.ERol;
 import model.models.Rol;
-import model.models.Usuario;
-import model.mappers.RolMapper;
 import model.repositories.ClienteRepository;
 import model.repositories.RolRepository;
-import model.repositories.UsuarioRepository;
 import model.security.jwt.JwtUtil;
 import model.security.service.UserDetailsImpl;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,23 +30,13 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/auth")
+@AllArgsConstructor
 public class AuthenticationController{
-    @Autowired
-    private RolMapper roleMapper;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private ClienteRepository userRepository;
-    @Autowired
-    private RolRepository rolRepository;
-
-    public AuthenticationController(RolMapper roleMapper) {
-        this.roleMapper = roleMapper;
-    }
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+    private final ClienteRepository userRepository;
+    private final RolRepository rolRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
@@ -67,9 +54,11 @@ public class AuthenticationController{
 
         return ResponseEntity.ok(new JwtResponse(jwtToken, "Bearer ", userDetails.getUsername(), roles));
     }
+
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupRequest sRequest){
         Set<Rol> roles = new HashSet<>();
+        roles.add(rolRepository.findByRole(ERol.ROLE_USER));
 
         Cliente cliente = new Cliente(
                 null,
@@ -81,18 +70,11 @@ public class AuthenticationController{
                 sRequest.username(),
                 passwordEncoder.encode(sRequest.password()),
                 sRequest.email(),
-                roleMapper.toRoles(sRequest.roles())
+                roles
         );
-
-        Rol roleUser = rolRepository.findByRole(ERol.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Rol no encontrado"));
-
-        cliente.getRoles().add(roleUser);
 
         Cliente newCliente = userRepository.save(cliente);
 
-        //Usuario user = new Usuario(null, sRequest.username(), passwordEncoder.encode(sRequest.password()),sRequest.email(),roleMapper.toRoles(sRequest.roles()));
-        //Usuario newUser = userRepository.save(user);
         return ResponseEntity.ok(newCliente);
     }
 }

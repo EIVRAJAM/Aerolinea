@@ -3,6 +3,7 @@ package model.controllers;
 import lombok.AllArgsConstructor;
 import model.dto.ReservaDTO;
 import model.services.ClienteServices;
+import model.services.VueloServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -18,6 +19,7 @@ import java.util.Optional;
 public class ReservaController {
     private final ReservaServices reservaServices;
     private final ClienteServices clienteServices;
+    private final VueloServices vueloServices;
 
     @GetMapping
     public ResponseEntity<List<ReservaDTO>> getReserves() {
@@ -44,10 +46,12 @@ public class ReservaController {
     }
 
 
+    //Realizar una reserva
     @PostMapping()
     public ResponseEntity<ReservaDTO> createReserve(@RequestBody ReservaDTO reserve) {
         return createNewReserve(reserve);
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<ReservaDTO> updateReserve(@PathVariable Long id, @RequestBody ReservaDTO reserve) {
         Optional<ReservaDTO> reserveUpdate = reservaServices.update(id,reserve);
@@ -55,8 +59,11 @@ public class ReservaController {
                 .map(ResponseEntity::ok)
                 .orElseGet(()->createNewReserve(reserve));
     }
+
     private ResponseEntity<ReservaDTO> createNewReserve(ReservaDTO reserve) {
         ReservaDTO reserveIdDto = reservaServices.save(reserve);
+
+
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
                 .path("/{id}")

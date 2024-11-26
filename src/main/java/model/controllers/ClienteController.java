@@ -2,17 +2,10 @@ package model.controllers;
 
 import lombok.AllArgsConstructor;
 import model.dto.ClienteDTO;
-import model.dto.ReservaDTO;
 import model.services.ClienteServices;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-//import org.springframework.security.core.Authentication;
-
-
 
 import java.net.URI;
 import java.util.List;
