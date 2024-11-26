@@ -7,15 +7,14 @@ import model.mappers.ClienteMapper;
 import model.mappers.PasajeroMapper;
 import model.mappers.ReservaMapper;
 import model.mappers.VueloMapper;
+import model.models.Vuelo;
 import model.repositories.ReservaRepository;
 import model.models.Reserva;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,18 +34,19 @@ public class ReservaServicesImpl implements ReservaServices {
 
     @Override
     public Optional<ReservaDTO> findById(Long id) {
-        return reservaRepository.findById(id).map(reservaMapper::toDto);
+        return reservaRepository.findById(id).map(reservaMapper::toIdDto);//ojoconesammada
     }
 
     @Override
     public Optional<ReservaDTO> update(Long id, ReservaDTO reserve) {
         return reservaRepository.findById(id).map(oldReserve -> {
             // Usa el nuevo método para convertir el cliente_id a Cliente
-            oldReserve.setCliente(clienteMapper.toEntity(reserve.cliente_id())); // Ahora pasa el cliente_id (Long)
-            oldReserve.setFecha(reserve.fecha());
-            oldReserve.setVuelos(vueloMapper.toListEntity(reserve.vuelos()));
-            oldReserve.setPasajeros(pasajeroMapper.toListEntity(reserve.pasajeros()));
-            oldReserve.setNumeroPasajeros(reserve.numeroPasajeros());
+            if(reserve.cliente_id() != null) { oldReserve.setCliente(clienteMapper.toEntity(reserve.cliente_id())); }
+            if(reserve.fecha() != null) { oldReserve.setFecha(reserve.fecha()); }
+            if(reserve.vuelos_ids() != null) { oldReserve.setVuelos( findFlightsByReservationId(id)); }
+            if(reserve.pasajeros() != null) { oldReserve.setPasajeros(pasajeroMapper.toListEntity(reserve.pasajeros())); }
+            if(reserve.numeroPasajeros() != 0) { oldReserve.setNumeroPasajeros(reserve.numeroPasajeros()); }
+
             return reservaMapper.toIdDto(reservaRepository.save(oldReserve));
         });
     }
@@ -80,6 +80,16 @@ public class ReservaServicesImpl implements ReservaServices {
 
     public List<Reserva> findAllById(List<Long> ids) {
         return null;
+    }
+
+    @Override
+    public List<Vuelo> findFlightsByReservationId(Long reservationId) {
+        Optional<Reserva> reserva = reservaRepository.findById(reservationId); // Asumiendo que tienes un repositorio
+        if (reserva.isPresent()) {
+            return reserva.get().getVuelos(); // Devuelve la lista de vuelos
+        } else {
+            throw new IllegalArgumentException("Reserva no encontrada con el ID: " + reservationId);
+        }
     }
 
 

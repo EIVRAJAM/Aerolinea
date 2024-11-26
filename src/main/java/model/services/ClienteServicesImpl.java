@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor(onConstructor = @__(@Lazy))
@@ -38,12 +37,13 @@ public class ClienteServicesImpl implements ClienteServices {
     @Override
     public Optional<ClienteDTO> update(Long id, ClienteDTO client) {
         return clienteRepository.findById(id).map(oldClient -> {
-            oldClient.setDireccion(client.direccion());
-            oldClient.setNombre(client.nombre());
-            oldClient.setApellidos(client.apellidos());
-            oldClient.setEmail(client.email());
-            oldClient.setTelefono(client.telefono());
-            oldClient.setReservas(reservaMapper.toListEntity(client.reservas()));
+            if(client.direccion() != null) { oldClient.setDireccion(client.direccion()); }
+            if(client.nombre() != null) { oldClient.setNombre(client.nombre()); }
+            if(client.apellidos() != null) { oldClient.setApellidos(client.apellidos()); }
+            if(client.email() != null) { oldClient.setEmail(client.email()); }
+            if(client.telefono() != null) { oldClient.setTelefono(client.telefono()); }
+            if(client.reservas() != null) { oldClient.setReservas(reservaMapper.toListEntity(client.reservas())); }
+
             return clienteMapper.toIdDto(clienteRepository.save(oldClient));
         });
     }
@@ -72,12 +72,11 @@ public class ClienteServicesImpl implements ClienteServices {
         Cliente cliente = clienteRepository.findById(clienteId)
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado"));
 
-
         // Obtener las reservas del cliente_id
         List<Reserva> reservas = reservaRepository.findByClienteId(clienteId);
 
         // Convertir las reservas a DTOs (si estás usando DTOs)
-        return reservaMapper.toListIdDto(reservas);
+        return reservaMapper.toListDto(reservas);
     }
 
     //Se añadio

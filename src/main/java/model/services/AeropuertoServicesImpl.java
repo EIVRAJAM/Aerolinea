@@ -33,11 +33,12 @@ public class AeropuertoServicesImpl implements AeropuertoServices {
     @Override
     public Optional<AeropuertoDTO> update(Long id, AeropuertoDTO airport) {
         return aeropuertoRepository.findById((long) id).map(oldAirport -> {
-            oldAirport.setCiudad(airport.ciudad());
-            oldAirport.setPais(airport.pais());
-            oldAirport.setNombre(airport.nombre());
-            oldAirport.setVuelosOrigen(vueloMapper.toListEntity(airport.vuelosOrigen()));
-            oldAirport.setVuelosDestino(vueloMapper.toListEntity(airport.vuelosDestino()));
+            if(airport.ciudad() != null) { oldAirport.setCiudad(airport.ciudad()); }
+            if(airport.pais() != null) { oldAirport.setPais(airport.pais()); }
+            if(airport.nombre() != null) { oldAirport.setNombre(airport.nombre()); }
+            if(airport.vuelosOrigen() != null) {oldAirport.setVuelosOrigen(vueloMapper.toListEntity(airport.vuelosOrigen())); }
+            if(airport.vuelosDestino() != null) {oldAirport.setVuelosDestino(vueloMapper.toListEntity(airport.vuelosDestino())); }
+
             return aeropuertoMapper.toIdDto(aeropuertoRepository.save(oldAirport));
         });
     }

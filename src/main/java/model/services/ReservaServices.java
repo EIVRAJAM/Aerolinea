@@ -3,6 +3,7 @@ package model.services;
 import model.dto.ClienteDTO;
 import model.dto.ReservaDTO;
 import model.models.Reserva;
+import model.models.Vuelo;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -18,6 +19,8 @@ public interface ReservaServices {
     void deleteById(Long id);
 
     List<Reserva> findAllById(List<Long> ids);
+
+    List<Vuelo> findFlightsByReservationId(Long reservationId);
 
 }
 

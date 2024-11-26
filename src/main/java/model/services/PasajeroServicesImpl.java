@@ -34,13 +34,14 @@ public class PasajeroServicesImpl implements PasajeroServices {
     @Override
     public Optional<PasajeroDTO> update(Long id, PasajeroDTO passenger) {  // Cambiar int a Long
         return pasajeroRepository.findById(id).map(oldPassenger -> {
-            oldPassenger.setNombre(passenger.nombre());
-            oldPassenger.setApellido(passenger.apellido());
-            oldPassenger.setDireccion(passenger.direccion());
-            oldPassenger.setTelefono(passenger.telefono());
-            oldPassenger.setEmail(passenger.email());
-            oldPassenger.setReserva(reservaMapper.toEntity(passenger.reserva_id()));
-            return pasajeroMapper.toIdDto(pasajeroRepository.save(oldPassenger));
+        if(passenger.nombre() != null) { oldPassenger.setNombre(passenger.nombre()); }
+        if(passenger.apellido() != null) { oldPassenger.setApellido(passenger.apellido()); }
+        if(passenger.direccion() != null) { oldPassenger.setDireccion(passenger.direccion()); }
+        if(passenger.telefono() != null) { oldPassenger.setTelefono(passenger.telefono()); }
+        if(passenger.email() != null) { oldPassenger.setEmail(passenger.email()); }
+        if(passenger.reserva_id() != null) { oldPassenger.setReserva(reservaMapper.toEntity(passenger.reserva_id())); }
+
+        return pasajeroMapper.toIdDto(pasajeroRepository.save(oldPassenger));
         });
     }
 

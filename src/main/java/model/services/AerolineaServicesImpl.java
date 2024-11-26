@@ -32,11 +32,12 @@ public class AerolineaServicesImpl implements AerolineaServices {
 
     @Override
     public Optional<AerolineaDTO> update(Long id, AerolineaDTO airline) {
-        return aerolineaRepository.findById(airline.id()).map(oldAirline -> {
-            oldAirline.setCodigoAerolinea(airline.codigoAerolinea());
-            oldAirline.setNombre(airline.nombre());
-            oldAirline.setPaisOrigen(airline.paisOrigen());
-            oldAirline.setVuelos(vueloMapper.toListEntity(airline.vuelos()));
+        return aerolineaRepository.findById(id).map(oldAirline -> {
+            if(airline.codigo_aerolinea() != null) { oldAirline.setCodigo_aerolinea(airline.codigo_aerolinea()); }
+            if(airline.nombre() != null) { oldAirline.setNombre(airline.nombre()); }
+            if(airline.pais_origen() != null) { oldAirline.setPais_origen(airline.pais_origen()); }
+            if(airline.vuelos() != null) { oldAirline.setVuelos(vueloMapper.toListEntity(airline.vuelos())); }
+
             return aerolineaMapper.toIdDto(aerolineaRepository.save(oldAirline));
         });
     }
