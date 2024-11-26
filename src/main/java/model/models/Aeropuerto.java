@@ -21,7 +21,9 @@ import jakarta.persistence.*;
 public class Aeropuerto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column( nullable = false, unique = true)
     private Long id;
+
     private String nombre;
     private String ciudad;
     private String pais;

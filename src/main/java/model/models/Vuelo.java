@@ -35,14 +35,17 @@ public class Vuelo {
     @Column(name = "fecha_salida")
     private LocalDate fecha_salida;
 
-    @Column(name = "exit_time")
-    private Time tiempo_salida;
+    @Column(name = "hora_salida")
+    private Time hora_salida;
 
     @Column(name = "duracion")
     private Time duracion;
 
     @Column(name = "capacidad")
     private int capacidad;
+
+    @Column(name = "precio")
+    private Float precio;
 
     @ManyToMany(mappedBy = "vuelos")
     private List<Reserva> reservas;

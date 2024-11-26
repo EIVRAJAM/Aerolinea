@@ -20,9 +20,14 @@ public class Aerolinea {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String nombre;
-    private String codigoAerolinea;
-    private String paisOrigen;
+
+    //codigo_aerolinea
+    private String codigo_aerolinea;
+
+    //pais_origen
+    private String pais_origen;
 
     @OneToMany(mappedBy = "aerolinea")
     private List<Vuelo> vuelos;
