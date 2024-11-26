@@ -2,6 +2,7 @@ package model.mappers;
 
 import model.dto.PasajeroDTO;
 import model.models.Pasajero;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -11,12 +12,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = ReservaMapper.class)
 public interface PasajeroMapper {
 
-    @Named("complete")
+    @Named("pasajeroComplete")
     @Mapping(source = "pasajero.reserva.id", target = "reserva_id")  // Mapeamos solo el id de la reserva
     PasajeroDTO toIdDto(Pasajero pasajero);
 
     @Named("listComplete")
-    @Mapping(source = "pasajeros.reserva.id", target = "reserva_id")  // Mapeamos solo el id de la reserva
+    @IterableMapping(qualifiedByName = "pasajeroComplete") // Mapeamos solo el id de la reserva
     List<PasajeroDTO> toListIdDto(List<Pasajero> pasajeros);
 
     @Mapping(source = "pasajeroDto.reserva_id", target = "reserva.id")  // Mapeamos el id de vuelta a la entidad

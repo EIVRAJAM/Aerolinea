@@ -2,6 +2,7 @@ package model.mappers;
 
 import model.dto.ClienteDTO;
 import model.models.Cliente;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
@@ -11,12 +12,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = ReservaMapper.class)
 public interface ClienteMapper {
 
-    @Named("complete")
-    @Mapping(source = "cliente.reservas", target = "reservas", qualifiedByName = "listCompleteWithoutEntities")
+    @Named("clienteComplete")
+    @Mapping(source = "cliente.reservas", target = "reservas", qualifiedByName = "listReservasComplete")
     ClienteDTO toIdDto(Cliente cliente);//...ok
 
     @Named("listComplete")
-    @Mapping(source = "clientes.reservas", target = "reservas", qualifiedByName = "listCompleteWithoutEntities")
+    @IterableMapping(qualifiedByName = "clienteComplete")
     List<ClienteDTO> toListIdDto(List<Cliente> clientes);//...ok
 
     @Mapping(source = "clienteDTO.reservas", target = "reservas", qualifiedByName = "listEntityWithoutDtos")
