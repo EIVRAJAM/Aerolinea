@@ -43,6 +43,6 @@ public class Vuelo {
     @Column(name = "precio")
     private Float precio;
 
-    @ManyToMany(mappedBy = "vuelos")
+    @ManyToMany(mappedBy = "vuelos", cascade = CascadeType.ALL)
     private List<Reserva> reservas;
 }

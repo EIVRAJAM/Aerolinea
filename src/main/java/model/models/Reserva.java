@@ -33,13 +33,13 @@ public class Reserva {
     private int numeroPasajeros;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="cliente_id")
+    @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToMany(mappedBy = "reserva", fetch = FetchType.LAZY)
-    private List<Pasajero> pasajeros;
+    @OneToMany(mappedBy = "reserva", cascade = CascadeType.ALL, orphanRemoval = true)
+   private List<Pasajero> pasajeros;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
     @JoinTable(
             name = "vuelos_reservas",
             joinColumns = @JoinColumn(name = "reserva_id", referencedColumnName = "id"),

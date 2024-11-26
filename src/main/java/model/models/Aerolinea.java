@@ -1,12 +1,8 @@
 package model.models;
 
 import java.util.List;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +17,7 @@ public class Aerolinea {
 
     private String nombre;
 
-    //codigo_aerolinea
+    @Column(name="codigo_aerolinea", nullable = false, unique = true)
     private String codigo_aerolinea;
 
     //pais_origen
