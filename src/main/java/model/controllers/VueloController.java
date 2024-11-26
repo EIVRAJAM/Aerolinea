@@ -16,6 +16,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class VueloController {
     private final VueloServices vueloServices;
+
     @GetMapping()
     public ResponseEntity<List<VueloDTO>> getFlights() {
         return ResponseEntity.ok(vueloServices.findAll());

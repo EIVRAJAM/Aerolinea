@@ -2,6 +2,7 @@ package model.controllers;
 
 import lombok.AllArgsConstructor;
 import model.dto.ReservaDTO;
+import model.services.ClienteServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,6 +17,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ReservaController {
     private final ReservaServices reservaServices;
+    private final ClienteServices clienteServices;
 
     @GetMapping
     public ResponseEntity<List<ReservaDTO>> getReserves() {
@@ -28,6 +30,20 @@ public class ReservaController {
                 .map(r->ResponseEntity.ok().body(r))
                 .orElse(ResponseEntity.notFound().build());
     }
+
+    //Obtiene reservas del cliente por si ID
+    @GetMapping("/cliente/{id}")
+    public ResponseEntity<List<ReservaDTO>> getReserveByIdCliente(@PathVariable("id") Long id) {
+        List<ReservaDTO> reservas = clienteServices.getReservasByCliente(id);
+
+        if (reservas.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(reservas);
+    }
+
+
     @PostMapping()
     public ResponseEntity<ReservaDTO> createReserve(@RequestBody ReservaDTO reserve) {
         return createNewReserve(reserve);

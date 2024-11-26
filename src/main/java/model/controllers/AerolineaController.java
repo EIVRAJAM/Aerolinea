@@ -36,6 +36,7 @@ public class AerolineaController {
         Optional<AerolineaDTO> airlineUpdated = aerolineaServices.update(id, airline);
         return airlineUpdated.map(ResponseEntity::ok).orElseGet(() -> createNewAirline(airline));
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<AerolineaDTO> deleteAirline(@PathVariable Long id) {
         aerolineaServices.deleteById(id);

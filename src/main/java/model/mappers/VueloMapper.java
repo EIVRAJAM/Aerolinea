@@ -13,20 +13,20 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = {AerolineaMapper.class, AeropuertoMapper.class, ReservaMapper.class})
 public interface VueloMapper {
-    @Named("complete")
+    @Named("vueloComplete")
     @Mapping(source = "vuelo.aerolinea.id", target = "aerolinea_id")
     @Mapping(source = "vuelo.aeropuertoOrigen.id", target = "aeropuertoOrigen_id")
     @Mapping(source = "vuelo.aeropuertoDestino.id", target = "aeropuertoDestino_id")
-    @Mapping(source = "vuelo.reservas", target = "reservas_id", qualifiedByName = "listToIds") //, qualifiedByName = "listCompleteWithoutEntities"
+    @Mapping(source = "vuelo.reservas", target = "reservas_id", qualifiedByName = "listToIds")
     VueloDTO toIdDto(Vuelo vuelo);
 
+    //el q se esta usando posible error
     @Named("listComplete")
-    @Mapping(source = "vuelos.aerolinea.id", target = "aerolinea_id")//, qualifiedByName = "completeWithoutFlight"
-    @Mapping(source = "vuelos.aeropuertoOrigen_id", target = "aeropuertoOrigen_id")//, qualifiedByName = "completeWithoutFlight"
-    @Mapping(source = "vuelos.aeropuertoDestino_id", target = "aeropuertoDestino_id")//, qualifiedByName = "completeWithoutFlight"
-    @Mapping(source = "vuelos.reservas", target = "reservas", qualifiedByName = "listToIds")
+    @Mapping(source = "vuelos", target = "vuelos", qualifiedByName = "vueloComplete") // Aplica el mapper 'complete' a cada elemento de la lista
     List<VueloDTO> toListIdDto(List<Vuelo> vuelos);
 
+    //IMPORTANTE!!!!! ESTE SIRVE.
+    
     @Mapping(source = "vueloDTO.aerolinea_id", target = "aerolinea.id")//, qualifiedByName = "entityWithoutFlight"
     @Mapping(source = "vueloDTO.aeropuertoOrigen_id", target = "aeropuertoOrigen.id")//, qualifiedByName = "entityWithoutFlight"
     @Mapping(source = "vueloDTO.aeropuertoDestino_id", target = "aeropuertoDestino.id")//, qualifiedByName = "entityWithoutFlight"
@@ -64,10 +64,10 @@ public interface VueloMapper {
 */
 
     @Named("listCompleteWithoutEntities")
-    @Mapping(target = "aerolinea_id", ignore = true)
-    @Mapping(target = "aeropuertoOrigen_id", ignore = true)
-    @Mapping(target = "aeropuertoDestino_id", ignore = true)
-    @Mapping(target = "reservas", ignore = true)
+    @Mapping(source = "vuelos.aerolinea.id", target = "aerolinea_id")
+    @Mapping(source = "vuelos.aeropuertoOrigen.id", target = "aeropuertoOrigen_id")
+    @Mapping(source = "vuelos.aeropuertoDestino.id", target = "aeropuertoDestino_id")
+    @Mapping(source = "vuelos.reservas", target = "reservas_id", qualifiedByName = "listToIds")
     List<VueloDTO> toListIdDtoWithoutEntities(List<Vuelo> vuelos);
 
 /*    @Named("withoutIdWithoutEntities")
@@ -87,28 +87,15 @@ public interface VueloMapper {
     VueloDTO toDtoWithoutEntities(Vuelo vuelo);
     */
 
+
+    //PARA CORREGIR ---!!!!!!!!!!!!!!!!!!
     @Named("listWithoutIdWithoutEntities")
-    @Mapping(target = "aerolinea_id", ignore = true)
-    @Mapping(target = "aeropuertoOrigen_id", ignore = true)
-    @Mapping(target = "aeropuertoDestino_id", ignore = true)
+    @Mapping(source = "vuelo.aerolinea.id", target = "aerolinea_id")
+    @Mapping(source = "vuelo.aeropuertoOrigen.id", target = "aeropuertoOrigen_id")
+    @Mapping(source = "vuelo.aeropuertoDestino.id", target = "aeropuertoDestino_id")
     @Mapping(target = "reservas", ignore = true)
     @Mapping(target = "id", ignore = true)
     List<VueloDTO> toListDtoWithoutEntities(List<Vuelo> vuelo);
-
-  /*  @Named("EntityWithoutDtos")
-    @Mapping(target = "aerolinea", ignore = true)
-    @Mapping(target = "aeropuertoOrigen_id", ignore = true)
-    @Mapping(target = "aeropuertoDestino_id", ignore = true)
-    @Mapping(target = "reservas", ignore = true)
-    Vuelo toEntityWithoutDtos(VueloDTO vueloDTO);
-    */
-
-    @Named("toEntityWithoutDtos")
-    @Mapping(target = "aerolinea.id", ignore = true)
-    @Mapping(target = "aeropuertoOrigen.id", ignore = true) // Debes asignar esto manualmente si es necesario
-    @Mapping(target = "aeropuertoDestino.id", ignore = true) // Lo mismo aquí
-    @Mapping(target = "reservas", ignore = true)
-    Vuelo toEntityWithoutDtos(VueloDTO vueloDTO);
 
     @Named("listEntityWithoutDtos")
     @Mapping(target = "aerolinea_id", ignore = true)

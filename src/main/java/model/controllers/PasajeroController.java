@@ -45,6 +45,7 @@ public class PasajeroController {
         passengerService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
+
     private ResponseEntity<PasajeroDTO> createNewPassenger(PasajeroDTO passenger) {
         PasajeroDTO passengerIdDto = passengerService.save(passenger);
         URI location = ServletUriComponentsBuilder
