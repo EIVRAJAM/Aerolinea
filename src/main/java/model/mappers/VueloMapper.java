@@ -1,10 +1,8 @@
 package model.mappers;
 
 import model.dto.VueloDTO;
-import model.models.Aerolinea;
-import model.models.Cliente;
-import model.models.Reserva;
 import model.models.Vuelo;
+import model.services.VueloServices;
 import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,8 +23,7 @@ public interface VueloMapper {
 
     //el q se esta usando posible error
     //SE USA EN SERVICIO
-
-    @Named("listComplete")
+    @Named("listVuelosComplete")
     @IterableMapping(qualifiedByName = "vueloComplete") // Aplica el método 'vueloComplete' para cada elemento de la lista
     List<VueloDTO> toListIdDto(List<Vuelo> vuelos);
 
@@ -67,24 +64,6 @@ public interface VueloMapper {
     @Mapping(source = "vuelos_ids.reservas", target = "reservas", qualifiedByName = "listReservasToIds")
     List<VueloDTO> toListDto(List<Vuelo> vuelos);
 
-    //este se usa en los mappers
-    @Named("listCompleteWithoutEntities")
-    @Mapping(source = "vuelos_ids.aerolinea.id", target = "aerolinea_id")
-    @Mapping(source = "vuelos_ids.aeropuertoOrigen.id", target = "aeropuertoOrigen_id")
-    @Mapping(source = "vuelos_ids.aeropuertoDestino.id", target = "aeropuertoDestino_id")
-    @Mapping(source = "vuelos_ids.reservas", target = "reservas_id", qualifiedByName = "listReservasToIds")
-    List<VueloDTO> toListIdDtoWithoutEntities(List<Vuelo> vuelos);
-
-    //Se usa en los mappers
-    //PARA CORREGIR ---!!!!!!!!!!!!!!!!!!
-    @Named("listWithoutIdWithoutEntities")
-    @Mapping(source = "vuelo.aerolinea.id", target = "aerolinea_id")
-    @Mapping(source = "vuelo.aeropuertoOrigen.id", target = "aeropuertoOrigen_id")
-    @Mapping(source = "vuelo.aeropuertoDestino.id", target = "aeropuertoDestino_id")
-    @Mapping(target = "reservas", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    List<VueloDTO> toListDtoWithoutEntities(List<Vuelo> vuelo);
-
     //se usa en los mappers
     @Named("listEntityWithoutDtos")
     @Mapping(target = "aerolinea_id", ignore = true)
@@ -103,5 +82,6 @@ public interface VueloMapper {
                 .map(Vuelo::getId)
                 .collect(Collectors.toList());
     }
+
 }
 

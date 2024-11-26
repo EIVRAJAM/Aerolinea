@@ -30,39 +30,6 @@ public interface AerolineaMapper {
     @Mapping(target = "vuelos", ignore = true)
     AerolineaDTO toDto(Aerolinea aerolinea);//...ok
 
-    /*
-    @Named("listWithoutId")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(source = "aerolineas.vuelos_ids", target = "vuelos_ids", qualifiedByName = "listWithoutIdWithoutEntities")
-    List<AerolineaDTO> toListDto(List<Aerolinea> aerolineas);//...ok
-
-
-    @Named("completeWithoutFlight")
-    @Mapping(target = "vuelos_ids", ignore = true)
-    AerolineaDTO toIdDtoWithoutFlight(Aerolinea aerolinea);//...ok
-
-    @Named("listCompleteWithoutFlight")
-    @Mapping(target = "vuelos_ids", ignore = true)
-    List<AerolineaDTO> toListIdDtoWithoutFlight(List<Aerolinea> aerolineas);//...ok
-
-    @Named("entityWithoutFlight")
-    @Mapping(target = "vuelos_ids", ignore = true)
-    Aerolinea toEntityWithoutFlight(AerolineaDTO aerolineaDTO);//...ok
-
-    @Named("listEntityWithoutFlight")
-    @Mapping(target = "vuelos_ids", ignore = true)
-    List<Aerolinea> toListEntityWithoutFlight(List<AerolineaDTO> airlineDto);//...ok
-
-    @Named("withoutIdWithoutFlight")
-    @Mapping(target = "vuelos_ids", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    AerolineaDTO toDtoWithoutFlight(Aerolinea aerolinea);//...ok
-
-    @Named("listWithoutIdWithoutFlight")
-    @Mapping(target = "vuelos_ids", ignore = true)
-    @Mapping(target = "id", ignore = true)
-    List<AerolineaDTO> toListDtoWithoutFlight(List<Aerolinea> aerolineas);//...ok
-*/
     @Mapping(target = "id", source = "id")
     Aerolinea toEntity(Long id);
 }
