@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres-db
+    environment:
+      POSTGRES_DB: Aeropuertos
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456789
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .  # Ajusta esto si tu Dockerfile está en otro directorio
+    container_name: spring-boot-app
+    depends_on:
+      - postgres
+    ports:
+      - "9292:9292"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/Aeropuertos
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123456789
+    networks:
+      - app-network
+
+volumes:
+  postgres-data:
+
+networks:
+  app-network:
+    driver: bridge
