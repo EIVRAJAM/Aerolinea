@@ -1,8 +1,14 @@
 package model.controllers;
 
 import lombok.AllArgsConstructor;
+import model.dto.PasajeroDTO;
 import model.dto.ReservaDTO;
+import model.mappers.PasajeroMapper;
+import model.models.Pasajero;
+import model.models.Reserva;
+import model.repositories.PasajeroRepository;
 import model.services.ClienteServices;
+import model.services.PasajeroServices;
 import model.services.VueloServices;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +26,9 @@ public class ReservaController {
     private final ReservaServices reservaServices;
     private final ClienteServices clienteServices;
     private final VueloServices vueloServices;
+    private final PasajeroMapper pasajeroMapper;
+    private final PasajeroServices pasajeroServices;
+    private final PasajeroRepository pasajeroRepository;
 
     @GetMapping
     public ResponseEntity<List<ReservaDTO>> getReserves() {
@@ -60,9 +69,14 @@ public class ReservaController {
                 .orElseGet(()->createNewReserve(reserve));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReserva(@PathVariable Long id) {
+        reservaServices.deleteById(id); // Llama al método del servicio para eliminar
+        return ResponseEntity.noContent().build(); // Responde 204
+    }
+
     private ResponseEntity<ReservaDTO> createNewReserve(ReservaDTO reserve) {
         ReservaDTO reserveIdDto = reservaServices.save(reserve);
-
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentRequest()
