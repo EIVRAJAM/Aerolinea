@@ -22,7 +22,7 @@ public interface ReservaMapper {
 
     @Mapping(source = "reservaDTO.cliente_id", target = "cliente.id") // Corregido: mapeamos cliente_id a cliente.id
     @Mapping(source = "reservaDTO.pasajeros", target = "pasajeros", qualifiedByName = "listEntityWithoutReserve")
-    //@Mapping(source = "reservaDTO.vuelos_ids", target = "vuelos_ids", qualifiedByName = "listEntityWithoutDtos") PENDIENTE POR CAMBIAR
+        //@Mapping(source = "reservaDTO.vuelos_ids", target = "vuelos_ids", qualifiedByName = "listEntityWithoutDtos") PENDIENTE POR CAMBIAR
     Reserva toEntity(ReservaDTO reservaDTO);
 
     @Mapping(source = "reservasDTO.cliente_id", target = "cliente.id") // Corregido: mapeamos cliente_id a cliente.id
