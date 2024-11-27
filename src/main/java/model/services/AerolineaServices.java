@@ -12,4 +12,5 @@ public interface AerolineaServices {
     List<AerolineaDTO > findAll();
     List<AerolineaDTO > findByName(String name);
     void deleteById(Long id);
+    Long buscarIdPorNombre(String nombre);
 }
