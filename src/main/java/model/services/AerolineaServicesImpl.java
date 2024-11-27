@@ -60,4 +60,12 @@ public class AerolineaServicesImpl implements AerolineaServices {
         aerolineaRepository.deleteById(id);
     }
 
+    @Override
+    public Long buscarIdPorNombre(String nombre) {
+        Aerolinea aerolinea = aerolineaRepository.findByNombre(nombre);
+        if (aerolinea != null) {
+            return aerolinea.getId();  // Retorna el id de la aerolínea
+        }
+        return null;  // Retorna null si no se encuentra la aerolínea
+    }
 }
